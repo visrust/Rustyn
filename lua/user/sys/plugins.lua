@@ -1,4 +1,3 @@
--- Your Plugins must be added here.
 -- =====================
 -- (1) Bootstrap lazy.nvim
 -- =====================

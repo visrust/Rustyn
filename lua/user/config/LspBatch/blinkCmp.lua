@@ -1,6 +1,3 @@
--- Minimal blink.cmp + LSP setup with beautiful icons
--- Install: saghen/blink.cmp, neovim/nvim-lspconfig
-
 vim.api.nvim_set_hl(0, "LspReferenceWrite", { underline = false, bg = "NONE" })
 vim.api.nvim_set_hl(0, "LspReferenceRead", { underline = false, bg = "NONE" })
 vim.api.nvim_set_hl(0, "LspReferenceText", { underline = false, bg = "NONE" })
@@ -99,7 +96,7 @@ require('blink.cmp').setup({
                     },
 
                     label = {
-                        width = { fill = true, max = 30 },
+                        width = { fill = true, max = 45 },
                         text = function(ctx) return ctx.label .. ctx.label_detail end,
                         highlight = function(ctx)
                             local highlights = {

@@ -1,3 +1,10 @@
+vim.g.loaded_python_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_perl_provider = 0
+
+-- =========================================================
+-- 1. Safe require (isolates failures)
+-- =========================================================
 local function safe_require(module)
     local ok, result = pcall(require, module)
     if not ok then
@@ -12,149 +19,231 @@ local function safe_require(module)
 end
 
 vim.lsp.set_log_level("warn") -- Only show warnings and errors, not info
--- ============= ============= ============= =============
--- 1. System core override
--- ============= ============= ============= =============
-safe_require("user._ui._core._itallic0")
-safe_require("user.sys.directMap.quit_save")
-safe_require("user.sys.directMap.buf_cycle")
-safe_require("user.sys.directMap.autopopup_toggle")
-safe_require("user.sys.plugins")
 
--- ============= ============= ============= =============
--- 2. Inbuilt core
--- ============= ============= ============= =============
-safe_require("user.sys.inbuilt.last_pos")
--- ============= ============= ============= =============
--- 3. BASIC SETTINGS CORE
--- ============= ============= ============= =============
-safe_require("user.sys.env")
-safe_require("user.sys.options")
-safe_require("user.sys.mappings")
-safe_require("user.sys.autoreload")
-safe_require("user.sys.mason")
--- ============= ============= ============= =============
---  4. ui CORE (Overridden)
--- ============= ============= ============= =============
-safe_require("user._ui._core._dashboard")
-safe_require("user._ui._core._diagonasticsigns")
-safe_require("user._ui._core._ibl")
-safe_require("user._ui._core._bufferline")
-safe_require("user._ui._core._statusline")
-safe_require("user._ui._core._dressing")
-safe_require("user._ui._core._windows")
-safe_require("user._ui._core._sgt")
-safe_require("user._ui._core._notify")
-safe_require("user._ui._core._ascii")
--- ============= ============= ============= =============
---  5. Custom treesitter
--- ============= ============= ============= =============
-safe_require("user._ui._customts.ts_file_call")
-safe_require("user._ui._customts.gruvbox_ts")
--- ============= ============= ============= =============
---  6. Cherry on top
--- ============= ============= ============= =============
-safe_require("user._ui.cherry.custom_treesitters")
-safe_require("user._ui.cherry.gitsigns")
-safe_require("user._ui.cherry.theme")
-safe_require("user._ui.cherry.colors")
--- ============= ============= ============= =============
--- 7. Mini Eco_system
--- ============= ============= ============= =============
-safe_require("user.ecosys.mini.mini_surround")
-safe_require("user.ecosys.mini.mini_notify")
-safe_require("user.ecosys.mini.mini_icons")
-safe_require("user.ecosys.mini.mini_animate")
-safe_require("user.ecosys.mini.mini_jump")
--- ============= ============= ============= =============
--- 8. LspConfig Setup
--- ============= ============= ============= =============
--- HighLevel
-safe_require("user.config.LspConfig.HighLevel.lua_ls")
-safe_require("user.config.LspConfig.HighLevel.pyright")
--- LowLevel
-safe_require("user.config.LspConfig.LowLevel.asm")
-safe_require("user.config.LspConfig.LowLevel.clang")
-safe_require("user.config.LspConfig.LowLevel.cmake")
-safe_require("user.config.LspConfig.LowLevel.rust_analyzer")
-safe_require("user.config.LspConfig.LowLevel.zls")
--- Productive
-safe_require("user.config.LspConfig.Productive.bash_ls")
-safe_require("user.config.LspConfig.Productive.marksman")
-safe_require("user.config.LspConfig.Productive.vimls")
--- Utilities
-safe_require("user.config.LspConfig.Utilities.dockerls")
-safe_require("user.config.LspConfig.Utilities.jsonls")
-safe_require("user.config.LspConfig.Utilities.yamlls")
--- Web
-safe_require("user.config.LspConfig.Web.css_ls")
-safe_require("user.config.LspConfig.Web.gopls")
-safe_require("user.config.LspConfig.Web.html")
-safe_require("user.config.LspConfig.Web.phpactor")
-safe_require("user.config.LspConfig.Web.vtsls")
--- GameDev
-safe_require("user.config.LspConfig.GameDev.Godot_ls")
--- Activate Them all --
-safe_require("user.config.LspBatch.lsp")
--- ============= ============= ============= =============
--- 9. LspBatch Setup
--- ============= ============= ============= =============
-safe_require("user.config.LspBatch.blinkCmp")
-safe_require("user.config.LspBatch.goto_preview")
-safe_require("user.config.LspBatch.autopairs")
-safe_require("user.config.LspBatch.formatter")
-safe_require("user.config.LspBatch.luasnip")
-safe_require("user.config.LspBatch.lspkind")
-safe_require("user.config.LspBatch.navic")
--- Dap Setup
-safe_require("user.config.Dap.setup")
-safe_require("user.config.Dap.keymaps")
-safe_require("user.config.Dap.langs.rust")
--- ============= ============= ============= =============
--- 10. LspBatch Setup
--- ============= ============= ============= =============
-safe_require("user.config.IdeBatch.code_runner_on_click")
-safe_require("user.config.IdeBatch.nvimtree")
-safe_require("user.config.IdeBatch.telescope")
-safe_require("user.config.IdeBatch.toggleterm")
-safe_require("user.config.IdeBatch.project")
-safe_require("user.config.IdeBatch.sessions")
-safe_require("user.config.LspBatch.trouble")
-safe_require("user.config.IdeBatch.snipe")
-safe_require("user.config.IdeBatch.todo")
-safe_require("user.config.IdeBatch.sessions")
-safe_require("user.config.IdeBatch.whkey")
-safe_require("user.config.IdeBatch.multiselect")
-safe_require("user.config.IdeBatch.treesitter")
-safe_require("user.config.IdeBatch.showkey")
-safe_require("user.config.IdeBatch.surround")
-safe_require("user.config.IdeBatch.arrow")
-safe_require("user.config.IdeBatch.comments")
-safe_require("user.config.IdeBatch.lazygit")
-safe_require("user.config.IdeBatch.flash")
-safe_require("user.config.IdeBatch.undotree")
-safe_require("user.config.IdeBatch.yanky")
-safe_require("user.config.IdeBatch.oil")
-safe_require("user.config.IdeBatch.file_organizer_setup")
-safe_require("user.config.IdeBatch.fold")
-safe_require("user.config.IdeBatch.hydra")
-safe_require("user.sys.copy_to_sys")
+-- =========================================================
+-- 2. Alias registry (logical namespaces)
+-- =========================================================
+local ALIAS = {
+    -- UI
+    uc  = "user._ui._core",
+    ucc = "user._ui._customts",
+    uch = "user._ui.cherry",
 
--- ============= ============= ============= =============
--- 11. Call the Inbuilt
--- ============= ============= ============= =============
-safe_require("user.config.IdeBatch.call.autosave")
-safe_require("user.config.IdeBatch.call.notific")
--- ============= ============= ============= =============
--- 12. PluginExtensionConfiguration
--- ============= ============= ============= =============
-safe_require("user.other.extconfig.overseer")
+    -- System
+    us  = "user.sys",
 
+    -- Mini ecosystem
+    um  = "user.ecosys.mini",
+
+    -- LSP / IDE
+    lsp = "user.config.LspConfig",
+    lb  = "user.config.LspBatch",
+    ide = "user.config.IdeBatch",
+
+    -- Other
+    ext = "user.other.extconfig",
+}
+
+-- =========================================================
+-- 3. Alias-aware require
+-- =========================================================
+local function r(mod)
+    local head, tail = mod:match("^([^.]+)%.?(.*)$")
+    if ALIAS[head] then
+        if tail ~= "" then
+            return safe_require(ALIAS[head] .. "." .. tail)
+        else
+            return safe_require(ALIAS[head])
+        end
+    end
+    return safe_require(mod)
+end
+
+-- Optional: expose globally for quick access
+_G.r = r
+
+-- =========================================================
+-- 4. Helper for staged loading (preserves control flow)
+-- =========================================================
+local function load_stage(stage)
+    for _, entry in ipairs(stage) do
+        if type(entry) == "string" then
+            r(entry)
+        elseif type(entry) == "function" then
+            entry()
+        elseif type(entry) == "table" and entry.load then
+            entry.load()
+        end
+    end
+end
+
+-- =========================================================
+-- 5. Staged configuration (control flow preserved)
+-- =========================================================
+local FLOW = {
+
+    -- 1. System core override
+    {
+        r("uc._itallic0"),
+        r("us.directMap.quit_save"),
+        r("us.directMap.buf_cycle"),
+        r("us.directMap.autopopup_toggle"),
+        r("us.plugins"),
+    },
+
+    -- 2. Inbuilt core
+    {
+        r("us.inbuilt.last_pos"),
+    },
+
+    -- 3. BASIC SETTINGS CORE
+    {
+        r("us.env"),
+        r("us.options"),
+        r("us.mappings"),
+        r("us.autoreload"),
+        r("us.mason"),
+    },
+
+    -- 4. UI CORE
+    {
+        r("uc._dashboard"),
+        r("uc._diagonasticsigns"),
+        r("uc._ibl"),
+        r("uc._bufferline"),
+        r("uc._statusline"),
+        r("uc._dressing"),
+        r("uc._windows"),
+        r("uc._sgt"),
+        r("uc._notify"),
+        r("uc._ascii"),
+    },
+
+    -- 5. Custom treesitter
+    {
+        r("ucc.ts_file_call"),
+        r("ucc.gruvbox_ts"),
+    },
+
+    -- 6. Cherry on top
+    {
+        r("uch.custom_treesitters"),
+        r("uch.gitsigns"),
+        r("uch.theme"),
+        r("uch.colors"),
+    },
+
+    -- 7. Mini ecosystem
+    {
+        r("um.mini_surround"),
+        r("um.mini_notify"),
+        r("um.mini_icons"),
+        r("um.mini_animate"),
+        r("um.mini_jump"),
+    },
+
+    -- 8. LSP Config Setup
+    {
+        -- HighLevel
+        r("lsp.HighLevel.lua_ls"),
+        r("lsp.HighLevel.pyright"),
+        -- LowLevel
+        r("lsp.LowLevel.asm"),
+        r("lsp.LowLevel.clang"),
+        r("lsp.LowLevel.cmake"),
+        r("lsp.LowLevel.rust_analyzer"),
+        r("lsp.LowLevel.zls"),
+        -- Productive
+        r("lsp.Productive.bash_ls"),
+        r("lsp.Productive.marksman"),
+        r("lsp.Productive.vimls"),
+        -- Utilities
+        r("lsp.Utilities.dockerls"),
+        r("lsp.Utilities.jsonls"),
+        r("lsp.Utilities.yamlls"),
+        -- Web
+        r("lsp.Web.css_ls"),
+        r("lsp.Web.gopls"),
+        r("lsp.Web.html"),
+        r("lsp.Web.phpactor"),
+        r("lsp.Web.vtsls"),
+        -- GameDev
+        r("lsp.GameDev.Godot_ls"),
+        -- Activate all
+        r("lb.lsp"),
+    },
+
+    -- 9. LspBatch + Dap
+    {
+        r("lb.blinkCmp"),
+        r("lb.goto_preview"),
+        r("lb.autopairs"),
+        r("lb.formatter"),
+        r("lb.luasnip"),
+        r("lb.lspkind"),
+        r("lb.navic"),
+
+        r("user.config.Dap.setup"),
+        r("user.config.Dap.keymaps"),
+        r("user.config.Dap.langs.rust"),
+    },
+
+    -- 10. IDE Batch
+    {
+        r("ide.code_runner_on_click"),
+        r("ide.nvimtree"),
+        r("ide.telescope"),
+        r("ide.toggleterm"),
+        r("ide.project"),
+        r("ide.sessions"),
+        r("lb.trouble"),
+        r("ide.snipe"),
+        r("ide.todo"),
+        r("ide.whkey"),
+        r("ide.multiselect"),
+        r("ide.treesitter"),
+        r("ide.showkey"),
+        r("ide.surround"),
+        r("ide.arrow"),
+        r("ide.comments"),
+        r("ide.lazygit"),
+        r("ide.flash"),
+        r("ide.undotree"),
+        r("ide.yanky"),
+        r("ide.oil"),
+        r("ide.file_organizer_setup"),
+        r("ide.fold"),
+        r("ide.hydra"),
+    },
+
+    -- 11. Inbuilt calls
+    {
+        r("ide.call.autosave"),
+        r("ide.call.notific"),
+    },
+
+    -- 12. Plugin extension
+    {
+        r("ext.overseer"),
+    },
+
+}
+
+-- =========================================================
+-- 6. Execute all stages
+-- =========================================================
+for _, stage in ipairs(FLOW) do
+    load_stage(stage)
+end
+
+-- =========================================================
+-- 7. Post-init (UI & keymaps)
+-- =========================================================
 vim.cmd.colorscheme("nightfox")
--- Keep as it plugins
+
 vim.keymap.set('n', '<leader>tc', function()
     require('telescope.builtin').find_files({
-        cwd = vim.fn.expand('$MYVIMRC'):match('(.*/)'), -- Gets directory of init.lua
+        cwd = vim.fn.expand('$MYVIMRC'):match('(.*/)'),
         prompt_title = '< Neovim Config >'
     })
 end, { desc = 'Find config files' })
