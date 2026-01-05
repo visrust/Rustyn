@@ -204,16 +204,13 @@ local FLOW = {
         r("ide.treesitter"),
         r("ide.showkey"),
         r("ide.surround"),
-        r("ide.arrow"),
         r("ide.comments"),
         r("ide.lazygit"),
-        r("ide.flash"),
         r("ide.undotree"),
         r("ide.yanky"),
         r("ide.oil"),
         r("ide.file_organizer_setup"),
         r("ide.fold"),
-        r("ide.hydra"),
     },
 
     -- 11. Inbuilt calls

@@ -186,7 +186,7 @@ require("lazy").setup({
         -- ===========================
         {
             "nvim-treesitter/nvim-treesitter",
-            version = "42fc28b",
+            version = "v0.10.0",
             build = ":TSUpdate",
             event = { "BufReadPost", "BufNewFile" },
             cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
@@ -273,14 +273,6 @@ require("lazy").setup({
         -- Navigation & Movement
         -- ===========================
         {
-            "folke/flash.nvim",
-            version = "v2.1.0",
-            event = "VeryLazy",
-            keys = {
-                { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-            },
-        },
-        {
             "karb94/neoscroll.nvim",
             version = "0.2.0",
             event = "VeryLazy",
@@ -288,13 +280,6 @@ require("lazy").setup({
         },
         {
             "leath-dub/snipe.nvim",
-            keys = {
-                { "<leader>bs", function() require("snipe").open_buffer_menu() end, desc = "Snipe buffers" },
-            },
-        },
-        {
-            "otavioschwanck/arrow.nvim",
-            event = "VeryLazy",
         },
 
         -- ===========================
@@ -344,10 +329,6 @@ require("lazy").setup({
             dependencies = { "kevinhwang91/promise-async" },
         },
         {
-            "anuvyklack/hydra.nvim",
-            event = "VeryLazy",
-        },
-        {
             "nvzone/showkeys",
             cmd = "ShowkeysToggle",
         },
@@ -358,9 +339,6 @@ require("lazy").setup({
         {
             "ThePrimeagen/refactoring.nvim",
             cmd = "Refactor",
-            keys = {
-                { "<leader>re", mode = { "n", "v" }, desc = "Refactor" },
-            },
         },
         {
             "stevearc/overseer.nvim",
@@ -370,21 +348,21 @@ require("lazy").setup({
         -- ===========================
         -- AI Completion
         -- ===========================
-        {
-            "monkoose/neocodeium",
-            event = "InsertEnter",
-            config = function()
-                local neocodeium = require("neocodeium")
-                neocodeium.setup()
-                vim.keymap.set("i", "<A-f>", neocodeium.accept)
-                vim.keymap.set("i", "<A-w>", neocodeium.accept_word)
-                vim.keymap.set("i", "<A-l>", neocodeium.accept_line)
-                vim.keymap.set("i", "<A-n>", neocodeium.cycle_or_complete)
-                vim.keymap.set("i", "<A-p>", function() neocodeium.cycle_or_complete(-1) end)
-                vim.keymap.set("i", "<A-c>", neocodeium.clear)
-            end,
-        },
-
+        -- {
+        --     "monkoose/neocodeium",
+        --     event = "InsertEnter",
+        --     config = function()
+        --         local neocodeium = require("neocodeium")
+        --         neocodeium.setup()
+        --         vim.keymap.set("i", "<A-f>", neocodeium.accept)
+        --         vim.keymap.set("i", "<A-w>", neocodeium.accept_word)
+        --         vim.keymap.set("i", "<A-l>", neocodeium.accept_line)
+        --         vim.keymap.set("i", "<A-n>", neocodeium.cycle_or_complete)
+        --         vim.keymap.set("i", "<A-p>", function() neocodeium.cycle_or_complete(-1) end)
+        --         vim.keymap.set("i", "<A-c>", neocodeium.clear)
+        --     end,
+        -- },
+        --
         -- ===========================
         -- Session Management
         -- ===========================
