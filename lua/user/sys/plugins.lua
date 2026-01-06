@@ -317,13 +317,6 @@ require("lazy").setup({
             event = "VeryLazy",
         },
         {
-            "CRAG666/code_runner.nvim",
-            cmd = { "RunCode", "RunFile", "RunProject", "RunClose" },
-            keys = {
-                { "<leader>r", "<cmd>RunCode<cr>", desc = "Run code" },
-            },
-        },
-        {
             "kevinhwang91/nvim-ufo",
             event = "VeryLazy",
             dependencies = { "kevinhwang91/promise-async" },

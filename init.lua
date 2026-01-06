@@ -190,7 +190,7 @@ local FLOW = {
 
     -- 10. IDE Batch
     {
-        r("ide.code_runner_on_click"),
+        r("ide.run"),
         r("ide.nvimtree"),
         r("ide.telescope"),
         r("ide.toggleterm"),
