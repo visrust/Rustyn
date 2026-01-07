@@ -17,7 +17,3 @@ require('mini.jump2d').setup({
 -- Use mini for general jumping
 vim.keymap.set('n', 'm', '<cmd>lua MiniJump2d.start(MiniJump2d.builtin_opts.single_character)<cr>')
 
--- Flash for treesitter only
-vim.keymap.set({ "n", "x", "o" }, "M", function()
-    require("flash").treesitter()
-end)

@@ -39,6 +39,8 @@ vim.opt.sidescrolloff = 8
 vim.opt.smartindent = true
 
 vim.opt.backspace = { "indent", "eol", "start" }
+vim.opt.spell = true
+vim.opt.spelllang = "en_us"
 
 
 

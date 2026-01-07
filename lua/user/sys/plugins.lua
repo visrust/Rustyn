@@ -118,7 +118,6 @@ require("lazy").setup({
             "folke/trouble.nvim",
             branch = "main",
             version = "v3.7.1",
-            cmd = { "Trouble", "TroubleToggle" },
         },
 
         -- ===========================
@@ -189,7 +188,6 @@ require("lazy").setup({
             version = "v0.10.0",
             build = ":TSUpdate",
             event = { "BufReadPost", "BufNewFile" },
-            cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
         },
 
         -- ===========================
@@ -198,25 +196,17 @@ require("lazy").setup({
         {
             "nvim-tree/nvim-tree.lua",
             version = "v1.14.0",
-            cmd = { "NvimTreeToggle", "NvimTreeOpen", "NvimTreeFocus", "NvimTreeFindFile" },
             keys = {
                 { "<leader>e", "<cmd>NvimTreeToggle<cr>" }
                 ,
             },
             dependencies = { "nvim-tree/nvim-web-devicons" },
-            config = function()
-                require("user.config.IdeBatch.nvimtree")
-            end
 
         },
         {
             "stevearc/oil.nvim",
             version = "v2.15.0",
-            cmd = "Oil",
             dependencies = { "echasnovski/mini.icons" },
-            config = function()
-                require("user.config.IdeBatch.oil")
-            end
         },
 
         -- ===========================
@@ -225,7 +215,6 @@ require("lazy").setup({
         {
             "nvim-telescope/telescope.nvim",
             tag = "0.1.5",
-            cmd = "Telescope",
             keys = {
                 { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find files" },
                 { "<leader>fg", "<cmd>Telescope live_grep<cr>",  desc = "Live grep" },
@@ -243,9 +232,6 @@ require("lazy").setup({
                 "nvim-telescope/telescope-ui-select.nvim",
             },
 
-            config = function()
-                require("user.config.IdeBatch.telescope")
-            end
         },
 
         -- ===========================
@@ -257,9 +243,6 @@ require("lazy").setup({
             keys = {
                 { "<C-x><Space>", "<cmd>ToggleTerm<cr>" },
             },
-            config = function()
-                require("user.config.IdeBatch.toggleterm")
-            end,
         },
         {
             "windwp/nvim-autopairs",
@@ -288,10 +271,6 @@ require("lazy").setup({
                 { "gc", mode = { "n", "v" } },
                 { "gb", mode = { "n", "v" } },
             },
-            cmd = { "TodoTrouble", "TodoTelescope" },
-            config = function()
-                require("user.config.IdeBatch.todo")
-            end
         },
 
         -- ===========================
@@ -305,9 +284,6 @@ require("lazy").setup({
         },
         {
             "leath-dub/snipe.nvim",
-            keys = {
-                { "<leader>sn", function() require("snipe").open() end, { desc = "Snipe Menu" } },
-            },
         },
 
         -- ===========================
@@ -315,10 +291,6 @@ require("lazy").setup({
         -- ===========================
         {
             "kdheepak/lazygit.nvim",
-            cmd = { "LazyGit", "LazyGitConfig", "LazyGitFilter" },
-            keys = {
-                { "<leader>gg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
-            },
         },
 
         -- ===========================
@@ -336,12 +308,6 @@ require("lazy").setup({
         {
             "mbbill/undotree",
             cmd = "UndotreeToggle",
-            keys = {
-                { "<leader>u", "<cmd>UndotreeToggle<cr>", desc = "Undotree" },
-            },
-            config = function()
-                require("user.config.IdeBatch.undotree")
-            end
         },
         {
             "gbprod/yanky.nvim",
@@ -351,13 +317,9 @@ require("lazy").setup({
             "kevinhwang91/nvim-ufo",
             event = "BufReadPost",
             dependencies = { "kevinhwang91/promise-async" },
-            config = function()
-                require("user.config.IdeBatch.fold")
-            end
         },
         {
             "nvzone/showkeys",
-            cmd = "ShowkeysToggle",
         },
 
         -- ===========================
@@ -365,14 +327,10 @@ require("lazy").setup({
         -- ===========================
         {
             "ThePrimeagen/refactoring.nvim",
-            cmd = "Refactor",
         },
         {
             "stevearc/overseer.nvim",
             cmd = { "OverseerRun", "OverseerToggle", "OverseerInfo" },
-            config = function()
-                require("user.other.extconfig.overseer")
-            end
         },
 
         -- ===========================
@@ -561,3 +519,4 @@ vim.api.nvim_create_user_command("LazySetBatch", function(opts)
     require("lazy.core.config").options.concurrency = count
     vim.notify("Batch size set to: " .. count, vim.log.levels.INFO)
 end, { nargs = 1 })
+
