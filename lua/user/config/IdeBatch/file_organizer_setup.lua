@@ -67,8 +67,6 @@ vim.api.nvim_create_autocmd('BufLeave', {
     end,
 })
 
-vim.notify('File Organizer loaded! Press <leader>ao to open, <leader>ad to add files', vim.log.levels.INFO)
-
 -- USAGE GUIDE:
 --
 -- DISPLAY MODES:

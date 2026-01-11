@@ -142,6 +142,11 @@ local FLOW = {
         r("um.mini_jump"),
     },
 
+    -- {
+    --     r("lsp.verbose"),
+    -- },
+oj
+oj
     -- 8. LSP Config Setup
     {
         -- HighLevel
@@ -167,7 +172,7 @@ local FLOW = {
         r("lsp.Web.gopls"),
         r("lsp.Web.html"),
         r("lsp.Web.phpactor"),
-        r("lsp.Web.vtsls"),
+        r("lsp.Web.ts_ls"),
         -- GameDev
         r("lsp.GameDev.Godot_ls"),
         -- Activate all

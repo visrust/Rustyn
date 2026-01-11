@@ -5,7 +5,7 @@ vim.api.nvim_create_autocmd("InsertLeave", {
         vim.diagnostic.show(nil, bufnr)
     end,
 })
-require('lspconfig').tsserver.setup({
+require('lspconfig').ts_ls.setup({
     settings = {
         typescript = {
             inlayHints = {
