@@ -15,8 +15,7 @@ o.shiftwidth = 4
 o.tabstop = 4
 o.smartindent = true
 vim.opt.softtabstop = 4
-vim.opt.clipboard =
-"" -- WARN: let it be as It is Otherwise it can destroy the registers of neovim & a lot of nvrush features.
+vim.opt.clipboard = "" 
 vim.cmd("filetype plugin indent on")
 -- Minimal custom tabline: show current file + indicator for more tabs
 vim.o.showtabline = 2
@@ -50,7 +49,7 @@ vim.opt.spelllang = "en_us"
 vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 
 -- ------------------
--- Truecolor
+-- True color
 -- -----------------
 vim.opt.termguicolors = true
 -- =====================
@@ -66,3 +65,21 @@ vim.g.maplocalleader = "'"
 vim.g.loaded_python3_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
+
+
+-- Auto-fix with first suggestion
+vim.keymap.set('n', '<leader>fw', function()
+    local word = vim.fn.expand('<cword>')
+    local suggestions = vim.fn.spellsuggest(word, 1)
+    
+    if #suggestions > 0 then
+        vim.cmd('normal! ciw' .. suggestions[1])
+        vim.cmd('stopinsert')
+    else
+        vim.notify('No spelling suggestions found', vim.log.levels.WARN)
+    end
+end, { desc = 'Fix spelling (first suggestion)' })
+
+-- Quick spell check keybindings
+vim.keymap.set('n', '<C-x>s', 'z=', { desc = 'Spelling suggestions' })
+

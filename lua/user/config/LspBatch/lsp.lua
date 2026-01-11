@@ -22,15 +22,6 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
     }
 )
 
--- Set default border for all floating windows
-vim.diagnostic.config({
-    float = {
-        border = "rounded",
-        max_width = 80,
-        max_height = 20,
-    }
-})
-
 -- Global border style (affects other floating windows too)
 local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
 function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
