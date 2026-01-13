@@ -1,18 +1,9 @@
-local Terminal = require("toggleterm.terminal").Terminal
+-- run.lua
 
+-- Load the terminal module directly
+local FloatingTerminal = require("user.config.IdeBatch.toggleterm")
 
--- Persistent terminal (global)
-local runner = Terminal:new({
-    direction = "float",
-    hidden = true,
-    close_on_exit = false, -- NEVER auto close
-    start_in_insert = true,
-})
-local function ensure_runner_open()
-    if not runner:is_open() then
-        runner:open()
-    end
-end
+local RUNNER_ID = "code_runner"
 
 local function run_filetype_command()
     local ft = vim.bo.filetype
@@ -51,19 +42,53 @@ local function run_filetype_command()
         return
     end
 
-
-    -- send command (cd first, DO NOT exit shell)
-    ensure_runner_open()
+    -- Use FloatingTerminal
     vim.schedule(function()
-        runner:send("cd " .. cwd)
-        runner:send("clear")
-        runner:send(cmd)
+        FloatingTerminal.send("cd " .. cwd, RUNNER_ID)
+        FloatingTerminal.send("clear", RUNNER_ID)
+        FloatingTerminal.send(cmd, RUNNER_ID)
     end)
-
 end
 
 -- Run code
 vim.keymap.set("n", "<leader>zz", run_filetype_command, { silent = true })
+
+-- Toggle runner terminal
 vim.keymap.set("n", "<leader>xz", function()
-    runner:toggle()
+    FloatingTerminal.toggle(RUNNER_ID, "Code Runner")
 end, { silent = true })
+
+
+local term = require("user.config.IdeBatch.toggleterm")
+_G.FloatingTerminal = term
+
+-- Default terminal toggle
+vim.keymap.set({ "n", "t" }, "<C-\\>", function() 
+  term.toggle("default", "Terminal") 
+end, { desc = "Toggle default terminal" })
+
+-- Git terminal
+vim.keymap.set({ "n", "t" }, "<leader>gg", function() 
+  term.toggle("git", "Git Terminal") 
+end, { desc = "Toggle git terminal" })
+
+-- Test terminal
+vim.keymap.set({ "n", "t" }, "<leader>tt", function() 
+  term.toggle("test", "Test Runner") 
+end, { desc = "Toggle test terminal" })
+
+-- Navigation between terminals
+vim.keymap.set({ "n", "t" }, "<leader>tn", function()
+  term.next()
+end, { desc = "Next terminal" })
+
+vim.keymap.set({ "n", "t" }, "<leader>tp", function()
+  term.prev()
+end, { desc = "Previous terminal" })
+
+-- Terminal selection
+vim.keymap.set({ "n", "t" }, "<leader>ts", function()
+  term.select()
+end, { desc = "Select terminal" })
+
+
