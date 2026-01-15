@@ -239,18 +239,6 @@ require("lazy").setup({
         -- Editor Enhancements
         -- ===========================
         {
-            "akinsho/toggleterm.nvim",
-            version = "*",
-            keys = {
-                { "<C-x><Space>", "<cmd>ToggleTerm<cr>" },
-            },
-        },
-        {
-            "windwp/nvim-autopairs",
-            version = "0.10.0",
-            event = "InsertEnter",
-        },
-        {
             "kylechui/nvim-surround",
             version = "v3.1.7",
             event = "VeryLazy",
@@ -285,13 +273,6 @@ require("lazy").setup({
         },
         {
             "leath-dub/snipe.nvim",
-        },
-
-        -- ===========================
-        -- Git Integration
-        -- ===========================
-        {
-            "kdheepak/lazygit.nvim",
         },
 
         -- ===========================
