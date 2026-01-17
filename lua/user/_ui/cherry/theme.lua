@@ -235,7 +235,7 @@ local function get_universal_overrides(colors)
     -- ═══════════════════════════════════════════════════════════
     SignColumn    = { bg = colors.bg },
 --     LineNr        = { fg = colors.muted, bg = colors.bg },
-    CursorLineNr  = { fg = colors.accent, bg = colors.bg, bold = true },
+    -- CursorLineNr  = { fg = colors.accent, bg = colors.bg, bold = true },
     FoldColumn    = { fg = colors.muted, bg = colors.bg },
     CursorLine    = { bg = colors.cursor_line },
     ColorColumn   = { bg = colors.cursor_line },

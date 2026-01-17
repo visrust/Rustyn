@@ -242,3 +242,8 @@ vim.keymap.set('n', '<leader>tc', function()
         prompt_title = '< Neovim Config >'
     })
 end, { desc = 'Find config files' })
+
+
+vim.api.nvim_set_hl(0, "CursorLineSign", { link = "CursorLine" })
+
+vim.api.nvim_set_hl(0, "CursorLineNr", { link = "CursorLine" })
