@@ -45,8 +45,34 @@ The type of problem it solves is complex as it depends on your kind of problem a
 
 </details>
 
-## 🎯 Built to solve real problems
+## What is included ?
 
+This is broad as I have focused on multiple niche to keep editor balanced.
+
+## tools 
+
+- Built in floating terminal.
+- Fzf.lua and Yazi (make sure to install fzf & yazi in terminal).
+- formatter
+-
+
+
+## servers 
+- dap currently for rust only.
+- nvim-lsp-config based everyday programming language lsp configured.
+- which keys , show key , yank history & undo tree 
+- `:SGT colorscheme_name` to set available theme to 
+- go-to-preview for float based lsp preview on motions `gp`
+
+### ui 
+- NightFox on startup.
+- cokeline for tabline and lualine for statusline 
+- mini.notify for notification.
+
+### motion 
+- leap nvim for smarter + precise jumps 2 character jumps in buffer.
+- snipe nvim with `<leader>sb` + `<leader>fb` for precision
+- 
 **Zero friction development**
 - Only 105 KBS !
 - 2-3 second startup even on Snapdragon 4 Gen 1
@@ -104,6 +130,7 @@ echo "alias nv='NVIM_APPNAME=nv nvim'" >> ~/.zshrc && source ~/.zshrc
 
 **Uninstall:** `rm -rf ~/.config/nv/ ~/.local/share/nv/`
 
+```txt
 nvim
 └── lua --runtime folder 
     └── user -- root use it as first arg in require(user.path.to.some)
@@ -130,7 +157,8 @@ nvim
         ├── sys -- important files 
         │   └── inbuilt -- inbuilt important 
         └── ui -- ui plugins stay here 
-            └── core -- currently we keep dustnvim minimal in ui 
+            └── core -- currently we keep dustnvim minimal in ui
+```
 ---
 
 --- 

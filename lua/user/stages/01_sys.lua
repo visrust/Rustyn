@@ -9,3 +9,5 @@ require("user.sys.copy_to_sys")
 --
 -- Inbuilt features
 require('user.sys.inbuilt.last_pos')
+require('user.sys.inbuilt.RestartNvim')
+require('user.sys.inbuilt.ReloadFiles')
