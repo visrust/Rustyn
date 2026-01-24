@@ -138,54 +138,58 @@ end
 -- ============================================================================
 
 local function pick_register(registers, callback)
-    -- Try telescope first
-    local has_telescope, pickers = pcall(require, 'telescope.pickers')
-    
-    if has_telescope then
-        local finders = require('telescope.finders')
-        local conf = require('telescope.config').values
-        local actions = require('telescope.actions')
-        local action_state = require('telescope.actions.state')
-        
-        pickers.new({}, {
-            prompt_title = 'Registers',
-            finder = finders.new_table({
-                results = registers,
-                entry_maker = function(entry)
-                    return {
-                        value = entry,
-                        display = entry.display,
-                        ordinal = entry.display,
-                    }
-                end,
-            }),
-            sorter = conf.generic_sorter({}),
-            attach_mappings = function(prompt_bufnr)
-                actions.select_default:replace(function()
-                    local selection = action_state.get_selected_entry()
-                    actions.close(prompt_bufnr)
-                    if selection then
-                        callback(selection.value)
-                    end
-                end)
-                return true
-            end,
-        }):find()
-    else
-        -- Fallback: use vim.ui.select (requires a select UI plugin or uses default)
-        vim.ui.select(registers, {
-            prompt = 'Select register:',
-            format_item = function(item)
-                return item.display
-            end,
-        }, function(choice)
-            if choice then
-                callback(choice)
-            end
-        end)
-    end
-end
+  local has_fzf, fzf = pcall(require, "fzf-lua")
 
+  if has_fzf then
+    fzf.fzf_exec(
+      -- source
+      vim.tbl_map(function(item)
+        return item.display
+      end, registers),
+
+      {
+        prompt = "Registers> ",
+        winopts = {
+          height = 0.4,
+          width = 0.6,
+          preview = {
+            hidden = "hidden",
+          },
+        },
+
+        actions = {
+          ["default"] = function(selected)
+            if not selected or #selected == 0 then
+              return
+            end
+
+            local chosen_display = selected[1]
+
+            for _, item in ipairs(registers) do
+              if item.display == chosen_display then
+                callback(item)
+                return
+              end
+            end
+          end,
+        },
+      }
+    )
+
+  else
+    -- Fallback: vim.ui.select
+    vim.ui.select(registers, {
+      prompt = "Select register:",
+      format_item = function(item)
+        return item.display
+      end,
+    }, function(choice)
+      if choice then
+        callback(choice)
+      end
+    end)
+  end
+end
 -- ============================================================================
 -- KEYMAPS
 -- ============================================================================

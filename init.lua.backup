@@ -58,7 +58,7 @@ load_stages()
 -- =========================================================
 -- 3. Post-init
 -- =========================================================
-vim.cmd.colorscheme("nightfox")
+vim.cmd.colorscheme("carbonfox")
 
 
 local function safe_cursor_line_fix()
