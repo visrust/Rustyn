@@ -32,28 +32,6 @@ vim.notify = mini_notify.make_notify({
     TRACE = { duration = 3000, hl_group = 'DiagnosticHint' },
 })
 
--- CRITICAL: Intercept native error messages
-local original_err_writeln = vim.api.nvim_err_writeln
-vim.api.nvim_err_writeln = function(msg)
-    vim.notify(msg, vim.log.levels.ERROR)
-end
-
--- Intercept echo messages
-local original_echo = vim.api.nvim_echo
-vim.api.nvim_echo = function(chunks, history, opts)
-    -- Convert echo to notify for error messages
-    for _, chunk in ipairs(chunks) do
-        local text, hl = chunk[1], chunk[2]
-        if hl and (hl:match("Error") or hl:match("Warning")) then
-            local level = hl:match("Error") and vim.log.levels.ERROR or vim.log.levels.WARN
-            vim.notify(text, level)
-            return
-        end
-    end
-    -- Otherwise use original echo
-    original_echo(chunks, history, opts)
-end
-
 -- LSP message handler
 vim.lsp.handlers["window/showMessage"] = function(_, result, ctx)
     local client = vim.lsp.get_client_by_id(ctx.client_id)
@@ -71,8 +49,5 @@ vim.lsp.handlers["window/showMessage"] = function(_, result, ctx)
 end
 
 -- Keybindings
-vim.keymap.set('n', '<leader>nh', mini_notify.show_history, { desc = 'Notification history' })
-vim.keymap.set('n', '<leader>nc', mini_notify.clear, { desc = 'Clear notifications' })
-vim.keymap.set('n', '<leader>nr', mini_notify.refresh, { desc = 'Refresh notifications' })
 
 -- REMOVE the nvim-notify setup completely

@@ -87,6 +87,11 @@ wk.add({
     { '<leader>li',  '<Cmd>LspInfo<CR>',                        desc = 'Info' },
     { '<leader>ll',  '<Cmd>LspLog<CR>',                         desc = 'Log' },
 
+    { '<leader>n',   group = 'Notify' },
+    { '<leader>nh',  '<Cmd>lua MiniNotify.show_history()<CR>',  desc = 'Notification history' },
+    { '<leader>nc',  '<Cmd>lua MiniNotify.clear()<CR>',         desc = 'Clear notifications' },
+    { '<leader>nr',  '<Cmd>lua MiniNotify.refresh()<CR>',       desc = 'Refresh notifications' },
+
     -- ===============
     -- Messages/Notifications
     -- ===============
