@@ -1,4 +1,5 @@
 local lspconfig = require("lspconfig")
+-- Note this has been intentionally optimized for termux
 
 lspconfig.rust_analyzer.setup({
     flags = {
@@ -8,13 +9,13 @@ lspconfig.rust_analyzer.setup({
         ["rust-analyzer"] = {
             -- IMPORTANT: avoid Cargo path mismatches
             checkOnSave = {
-                enable = true,
-                command = "check", -- Set to check use clippy instead
+                enable = false,
+                -- command = "check", -- Set to check use clippy instead
             },
 
-            rustc = {
-                source = "discover",
-            },
+            -- rustc = {
+            --     source = "none",
+            -- },
 
             cargo = {
                 allFeatures = false,
