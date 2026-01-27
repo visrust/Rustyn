@@ -58,7 +58,7 @@ load_stages()
 -- =========================================================
 -- 3. Post-init
 -- =========================================================
-vim.cmd.colorscheme("catppuccin-mocha")
+vim.cmd.colorscheme("base16-horizon-dark")
 
 
 local function safe_cursor_line_fix()

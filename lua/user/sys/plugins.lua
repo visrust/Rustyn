@@ -382,6 +382,11 @@ require('lazy').setup({
         { 'EdenEast/nightfox.nvim', },
         { 'rose-pine/neovim', },
         { 'folke/tokyonight.nvim'},
+
+        {
+              "RRethy/base16-nvim",
+              priority = 1000,
+        },
     },
 
     -- ============================
