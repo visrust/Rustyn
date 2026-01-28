@@ -60,7 +60,7 @@ load_stages()
 -- =========================================================
 -- 3. Post-init
 -- =========================================================
-vim.cmd.colorscheme("tokyonight-night")
+vim.cmd.colorscheme("catppuccin-mocha")
 
 
 local function safe_cursor_line_fix()
