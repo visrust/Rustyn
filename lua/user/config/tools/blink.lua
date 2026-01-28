@@ -4,9 +4,9 @@
 -- ============================================================================
 
 -- Set highlight overrides first (cheap)
-vim.api.nvim_set_hl(0, "LspReferenceWrite", { underline = false, bg = "NONE" })
-vim.api.nvim_set_hl(0, "LspReferenceRead", { underline = false, bg = "NONE" })
-vim.api.nvim_set_hl(0, "LspReferenceText", { underline = false, bg = "NONE" })
+vim.api.nvim_set_hl(0, 'LspReferenceWrite', { underline = false, bg = 'NONE' })
+vim.api.nvim_set_hl(0, 'LspReferenceRead', { underline = false, bg = 'NONE' })
+vim.api.nvim_set_hl(0, 'LspReferenceText', { underline = false, bg = 'NONE' })
 
 -- Setup blink.cmp with minimal config first
 require('blink.cmp').setup({
@@ -15,31 +15,31 @@ require('blink.cmp').setup({
         nerd_font_variant = 'normal',
 
         kind_icons = {
-            Text          = "󰉿",
-            Method        = "󰆧",
-            Function      = "󰊕",
-            Constructor   = "󰆧",
-            Field         = "󰜢",
-            Variable      = "󰀫",
-            Property      = "󰜢",
-            Constant      = "󰏿",
-            Class         = "󰠱",
-            Struct        = "󰙅",
-            Interface     = "󰕘",
-            Module        = "󰕳",
-            Enum          = "󰕘",
-            EnumMember    = "󰆔",
-            TypeParameter = "󰊄",
-            Unit          = "󰑭",
-            Value         = "󰎠",
-            Keyword       = "󰌋",
-            Operator      = "󰆕",
-            Snippet       = "󰘌",
-            Event         = "󰌘",
-            Reference     = "󰈇",
-            File          = "󰈙",
-            Folder        = "󰉋",
-            Color         = "󰏘",
+            Text          = '󰉿',
+            Method        = '󰆧',
+            Function      = '󰊕',
+            Constructor   = '󰆧',
+            Field         = '󰜢',
+            Variable      = '󰀫',
+            Property      = '󰜢',
+            Constant      = '󰏿',
+            Class         = '󰠱',
+            Struct        = '󰙅',
+            Interface     = '󰕘',
+            Module        = '󰕳',
+            Enum          = '󰕘',
+            EnumMember    = '󰆔',
+            TypeParameter = '󰊄',
+            Unit          = '󰑭',
+            Value         = '󰎠',
+            Keyword       = '󰌋',
+            Operator      = '󰆕',
+            Snippet       = '󰘌',
+            Event         = '󰌘',
+            Reference     = '󰈇',
+            File          = '󰈙',
+            Folder        = '󰉋',
+            Color         = '󰏘',
         },
     },
 
@@ -69,8 +69,8 @@ require('blink.cmp').setup({
                 treesitter = { 'lsp' },
 
                 columns = {
-                    { "kind_icon", "kind",              gap = 1 },
-                    { "label",     "label_description", gap = 1 },
+                    { 'kind_icon', 'kind',              gap = 1 },
+                    { 'label',     'label_description', gap = 1 },
                 },
 
                 components = {
@@ -99,10 +99,12 @@ require('blink.cmp').setup({
                             }
                             if ctx.label_detail then
                                 table.insert(highlights,
-                                    { #ctx.label, #ctx.label + #ctx.label_detail, group = 'BlinkCmpLabelDetail' })
+                                    { #ctx.label, #ctx.label + #ctx.label_detail, group =
+                                    'BlinkCmpLabelDetail' })
                             end
                             for _, idx in ipairs(ctx.label_matched_indices) do
-                                table.insert(highlights, { idx, idx + 1, group = 'BlinkCmpLabelMatch' })
+                                table.insert(highlights,
+                                    { idx, idx + 1, group = 'BlinkCmpLabelMatch' })
                             end
                             return highlights
                         end,
@@ -197,7 +199,7 @@ require('blink.cmp').setup({
                 auto_show = true,
                 draw = {
                     columns = {
-                        { "label" }
+                        { 'label' }
                     },
                 },
             },
@@ -251,3 +253,13 @@ blink_capabilities.textDocument.completion.completionItem = {
 
 -- Export capabilities for LSP servers to use
 _G.blink_capabilities = blink_capabilities
+
+
+-- Adding new thing if anything unusal happens delete immediately
+--
+vim.api.nvim_create_autocmd('CursorHold', {
+    callback = function()
+        -- Triggers every few seconds of inactivity
+        require('blink.cmp').reload()
+    end
+})
