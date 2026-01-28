@@ -49,6 +49,7 @@ python3 audit_dustnvim.py ~/.config/nv
 ## 📋 What Gets Generated
 
 After running, check `~/.config/nv/audit_reports/`:
+make sure to have this folder.
 
 ```
 audit_reports/
