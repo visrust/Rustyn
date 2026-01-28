@@ -4,6 +4,8 @@ vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.lsp.set_log_level('warn')
 
+_G.map = vim.keymap.set
+
 -- =========================================================
 -- 1. Safe require helper
 -- =========================================================
