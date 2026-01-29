@@ -46,7 +46,7 @@ require('lazy').setup({
         {
             'L3MON4D3/LuaSnip',
             version = 'v2.4.1',
-            event = 'InsertEnter',
+            lazy = true,
             dependencies = {
                 'rafamadriz/friendly-snippets',
                 'honza/vim-snippets',
@@ -350,7 +350,8 @@ require('lazy').setup({
             'windwp/nvim-autopairs',
             dependencies = {
                 'saghen/blink.cmp',
-            }
+            },
+            lazy = true,
         },
 
         -- ===========================
@@ -360,7 +361,7 @@ require('lazy').setup({
         { 'EdenEast/nightfox.nvim', },
         { 'rose-pine/neovim', },
         { 'folke/tokyonight.nvim'},
-        { "ellisonleao/gruvbox.nvim"},
+        { "ellisonleao/gruvbox.nvim", lazy = true},
     },
 
     -- ============================

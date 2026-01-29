@@ -60,7 +60,7 @@ load_stages()
 -- =========================================================
 -- 3. Post-init
 -- =========================================================
-vim.cmd.colorscheme("gruvbox")
+vim.cmd.colorscheme("catppuccin-macchiato")
 
 
 local function safe_cursor_line_fix()

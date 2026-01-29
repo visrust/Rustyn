@@ -1,99 +1,86 @@
--- Smart and toggleable diagnostic configuration for Neovim
--- Universal solution for ALL LSP servers
+local M = {}
 
--- Create augroup for cleanup
-local diagnostic_group = vim.api.nvim_create_augroup("CustomDiagnostics", { clear = true })
-
--- State variables
-local diagnostics_state = {
+-- State
+local state = {
     enabled = true,
     virtual_text = false,
     signs = true,
     underline = true,
-    auto_popup = true,
-    update_in_insert = false,
+    auto_popup = false,
 }
 
--- Apply diagnostic configuration
-local function apply_diagnostic_config()
+-- Icons
+local icons = {
+    error = "󰅙",
+    warn = "󰀩",
+    hint = "󰋼",
+    info = "󰌵",
+}
+
+-- Apply config
+local function apply()
     vim.diagnostic.config({
-        update_in_insert = diagnostics_state.update_in_insert,
+        update_in_insert = false,
         severity_sort = true,
-        virtual_text = diagnostics_state.virtual_text and {
-            spacing = 4,
-            prefix = '●',
-            severity = {
-                min = vim.diagnostic.severity.HINT,
-            },
-        } or false,
-        signs = diagnostics_state.signs and {
+        virtual_text = state.virtual_text and { spacing = 4, prefix = '●' } or false,
+        signs = state.signs and {
             text = {
-                [vim.diagnostic.severity.ERROR] = "󰅙",
-                [vim.diagnostic.severity.WARN]  = "󰀩",
-                [vim.diagnostic.severity.HINT]  = "󰋼",
-                [vim.diagnostic.severity.INFO]  = "󰌵",
-            },
-            numhl = {
-                [vim.diagnostic.severity.ERROR] = "DiagnosticSignError",
-                [vim.diagnostic.severity.WARN] = "DiagnosticSignWarn",
-                [vim.diagnostic.severity.HINT] = "DiagnosticSignHint",
-                [vim.diagnostic.severity.INFO] = "DiagnosticSignInfo",
+                [vim.diagnostic.severity.ERROR] = icons.error,
+                [vim.diagnostic.severity.WARN] = icons.warn,
+                [vim.diagnostic.severity.HINT] = icons.hint,
+                [vim.diagnostic.severity.INFO] = icons.info,
             },
         } or false,
-        underline = diagnostics_state.underline,
+        underline = state.underline,
         float = {
             border = "rounded",
             source = "always",
             header = "",
             prefix = function(diagnostic, i, total)
-                local severity = diagnostic.severity
-                local prefix_map = {
-                    [vim.diagnostic.severity.ERROR] = "[E] ",
-                    [vim.diagnostic.severity.WARN] = "[W] ",
-                    [vim.diagnostic.severity.HINT] = "[H] ",
-                    [vim.diagnostic.severity.INFO] = "[I] ",
-                }
-                return i .. ". " .. (prefix_map[severity] or ""),
-                    "DiagnosticFloating" .. vim.diagnostic.severity[severity]
+                local icon = icons[vim.diagnostic.severity[diagnostic.severity]:lower()] or ""
+                local prefix = i .. ". " .. icon .. " "
+                
+                -- Add separator line after each diagnostic (except the last one)
+                if i < total then
+                    prefix = prefix .. "\n" .. string.rep("─", 50) .. "\n"
+                end
+                
+                return prefix, "DiagnosticFloating" .. vim.diagnostic.severity[diagnostic.severity]
             end,
         },
     })
-
-    if not diagnostics_state.enabled then
-        vim.diagnostic.disable()
-    else
+    
+    if state.enabled then
         vim.diagnostic.enable()
+    else
+        vim.diagnostic.disable()
     end
 end
 
--- Initialize configuration
-apply_diagnostic_config()
+-- Initialize
+apply()
+vim.opt.updatetime = 300
 
--- Auto-show diagnostics ONLY in Normal mode
+-- Auto-popup setup
+local group = vim.api.nvim_create_augroup("Diagnostics", { clear = true })
+
 local function setup_auto_popup()
-    -- Clear ALL autocmds in the group
-    vim.api.nvim_clear_autocmds({ group = diagnostic_group, event = "CursorHold" })
-
-    if diagnostics_state.auto_popup and diagnostics_state.enabled then
+    vim.api.nvim_clear_autocmds({ group = group, event = "CursorHold" })
+    
+    if state.auto_popup and state.enabled then
         vim.api.nvim_create_autocmd("CursorHold", {
-            group = diagnostic_group,
-            pattern = "*",
+            group = group,
             callback = function()
-                local mode = vim.api.nvim_get_mode().mode
-                -- Don't open if ANY floating window is already open
-                if mode == 'n' then
-                    for _, win in ipairs(vim.api.nvim_list_wins()) do
-                        if vim.api.nvim_win_get_config(win).relative ~= "" then
-                            return -- A floating window is open, don't interfere
-                        end
+                if vim.api.nvim_get_mode().mode ~= 'n' then return end
+                
+                -- Don't open if float already exists
+                for _, win in ipairs(vim.api.nvim_list_wins()) do
+                    if vim.api.nvim_win_get_config(win).relative ~= "" then
+                        return
                     end
-                    
-                    vim.diagnostic.open_float(nil, {
-                        focus = false,
-                        scope = "cursor",
-                        border = "rounded",
-                    })
                 end
+                
+                vim.diagnostic.open_float(nil, { focus = false, scope = "cursor" })
             end,
         })
     end
@@ -101,246 +88,60 @@ end
 
 setup_auto_popup()
 
--- Reduce delay for cursor hold
-vim.opt.updatetime = 300
-
 -- Toggle functions
-local function toggle_diagnostics()
-    diagnostics_state.enabled = not diagnostics_state.enabled
-    apply_diagnostic_config()
+function M.toggle()
+    state.enabled = not state.enabled
+    apply()
     setup_auto_popup()
-    vim.notify('Diagnostics: ' .. (diagnostics_state.enabled and 'enabled' or 'disabled'), vim.log.levels.INFO)
+    vim.notify('Diagnostics ' .. (state.enabled and 'ON' or 'OFF'))
 end
 
-local function toggle_virtual_text()
-    diagnostics_state.virtual_text = not diagnostics_state.virtual_text
-    apply_diagnostic_config()
-    vim.notify('Virtual text: ' .. (diagnostics_state.virtual_text and 'enabled' or 'disabled'), vim.log.levels.INFO)
-end
-
-local function toggle_signs()
-    diagnostics_state.signs = not diagnostics_state.signs
-    apply_diagnostic_config()
-    vim.notify('Diagnostic signs: ' .. (diagnostics_state.signs and 'enabled' or 'disabled'), vim.log.levels.INFO)
-end
-
-local function toggle_underline()
-    diagnostics_state.underline = not diagnostics_state.underline
-    apply_diagnostic_config()
-    vim.notify('Diagnostic underline: ' .. (diagnostics_state.underline and 'enabled' or 'disabled'), vim.log.levels.INFO)
-end
-
-local function toggle_auto_popup()
-    diagnostics_state.auto_popup = not diagnostics_state.auto_popup
+function M.toggle_auto_popup()
+    state.auto_popup = not state.auto_popup
     setup_auto_popup()
-    vim.notify('Auto popup: ' .. (diagnostics_state.auto_popup and 'enabled' or 'disabled'), vim.log.levels.INFO)
+    vim.notify('Auto popup ' .. (state.auto_popup and 'ON' or 'OFF'))
 end
 
-local function toggle_update_in_insert()
-    diagnostics_state.update_in_insert = not diagnostics_state.update_in_insert
-    apply_diagnostic_config()
-    vim.notify('Update in insert: ' .. (diagnostics_state.update_in_insert and 'enabled' or 'disabled'), vim.log.levels.INFO)
+function M.show()
+    vim.diagnostic.open_float(nil, { focus = false, scope = "cursor" })
 end
 
--- Cycle through diagnostic modes
-local diagnostic_modes = {
-    { name = "Full",    enabled = true,  virtual_text = false, signs = true,  underline = true,  auto_popup = false },
-    { name = "Minimal", enabled = true,  virtual_text = false, signs = true,  underline = false, auto_popup = false },
-    { name = "Silent",  enabled = true,  virtual_text = false, signs = false, underline = false, auto_popup = false },
-    { name = "Off",     enabled = false, virtual_text = false, signs = false, underline = false, auto_popup = false },
+-- Modes
+local modes = {
+    { name = "Full", enabled = true, signs = true, underline = true },
+    { name = "Minimal", enabled = true, signs = true, underline = false },
+    { name = "Silent", enabled = true, signs = false, underline = false },
+    { name = "Off", enabled = false, signs = false, underline = false },
 }
-local current_mode = 1
+local mode_idx = 1
 
-local function cycle_diagnostic_mode()
-    current_mode = (current_mode % #diagnostic_modes) + 1
-    local mode = diagnostic_modes[current_mode]
-
-    diagnostics_state.enabled = mode.enabled
-    diagnostics_state.virtual_text = mode.virtual_text
-    diagnostics_state.signs = mode.signs
-    diagnostics_state.underline = mode.underline
-    diagnostics_state.auto_popup = mode.auto_popup
-
-    apply_diagnostic_config()
+function M.cycle_mode()
+    mode_idx = (mode_idx % #modes) + 1
+    local mode = modes[mode_idx]
+    
+    state.enabled = mode.enabled
+    state.signs = mode.signs
+    state.underline = mode.underline
+    
+    apply()
     setup_auto_popup()
-    vim.notify('Diagnostic mode: ' .. mode.name, vim.log.levels.INFO)
+    vim.notify('Mode: ' .. mode.name)
 end
 
--- Manual diagnostic popup
-local function show_diagnostic_popup()
-    vim.diagnostic.open_float(nil, {
-        focus = false,
-        scope = "cursor",
-        border = "rounded",
-    })
-end
+-- Keymaps (minimal - just aa and ee like you wanted)
+vim.keymap.set('n', 'aa', M.toggle_auto_popup, { desc = 'Toggle Auto Popup' })
+vim.keymap.set('n', 'ee', M.show, { desc = 'Show Diagnostic' })
+vim.keymap.set('n', '<leader>dt', M.toggle, { desc = 'Toggle Diagnostics' })
+vim.keymap.set('n', '<leader>dm', M.cycle_mode, { desc = 'Cycle Mode' })
 
--- Create user commands
-vim.api.nvim_create_user_command('ToggleDiagnostics', toggle_diagnostics, { desc = 'Toggle all diagnostics' })
-vim.api.nvim_create_user_command('ToggleVirtualText', toggle_virtual_text, { desc = 'Toggle diagnostic virtual text' })
-vim.api.nvim_create_user_command('ToggleSigns', toggle_signs, { desc = 'Toggle diagnostic signs' })
-vim.api.nvim_create_user_command('ToggleUnderline', toggle_underline, { desc = 'Toggle diagnostic underline' })
-vim.api.nvim_create_user_command('ToggleAutoPopup', toggle_auto_popup, { desc = 'Toggle auto diagnostic popup' })
-vim.api.nvim_create_user_command('ToggleUpdateInInsert', toggle_update_in_insert, { desc = 'Toggle update in insert mode' })
-vim.api.nvim_create_user_command('CycleDiagnosticMode', cycle_diagnostic_mode, { desc = 'Cycle through diagnostic modes' })
-vim.api.nvim_create_user_command('ShowDiagnostic', show_diagnostic_popup, { desc = 'Show diagnostic popup' })
+-- Navigation
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Previous Diagnostic' })
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Next Diagnostic' })
+vim.keymap.set('n', '[e', function()
+    vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
+end, { desc = 'Previous Error' })
+vim.keymap.set('n', ']e', function()
+    vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
+end, { desc = 'Next Error' })
 
--- Diagnostics Toggles
-vim.keymap.set('n', '<leader>udt', toggle_diagnostics, { desc = 'Toggle All Diagnostics' })
-vim.keymap.set('n', '<leader>udm', cycle_diagnostic_mode, { desc = 'Cycle Diagnostic Mode' })
-vim.keymap.set('n', '<leader>udv', toggle_virtual_text, { desc = 'Toggle Virtual Text' })
-vim.keymap.set('n', '<leader>uds', toggle_signs, { desc = 'Toggle Signs' })
-vim.keymap.set('n', '<leader>udu', toggle_underline, { desc = 'Toggle Underline' })
-vim.keymap.set('n', '<leader>udp', toggle_auto_popup, { desc = 'Toggle Auto Popup' })
-vim.keymap.set('n', '<leader>udi', toggle_update_in_insert, { desc = 'Toggle Update in Insert' })
-vim.keymap.set('n', '<leader>udS', show_diagnostic_popup, { desc = 'Show Diagnostic' })
-vim.keymap.set('n', 'gl', show_diagnostic_popup, { desc = 'Show Line Diagnostic' })
-
--- Diagnostic count in statusline
-vim.api.nvim_create_autocmd({ "DiagnosticChanged", "BufEnter" }, {
-    group = diagnostic_group,
-    pattern = "*",
-    callback = function()
-        local diagnostics = vim.diagnostic.get(0)
-        local count = { error = 0, warn = 0, info = 0, hint = 0 }
-        for _, diagnostic in ipairs(diagnostics) do
-            if diagnostic.severity == vim.diagnostic.severity.ERROR then
-                count.error = count.error + 1
-            elseif diagnostic.severity == vim.diagnostic.severity.WARN then
-                count.warn = count.warn + 1
-            elseif diagnostic.severity == vim.diagnostic.severity.INFO then
-                count.info = count.info + 1
-            elseif diagnostic.severity == vim.diagnostic.severity.HINT then
-                count.hint = count.hint + 1
-            end
-        end
-        vim.b.diagnostic_count = count
-    end,
-})
-
--- ============================================================================
--- UNIVERSAL LSP DIAGNOSTIC HANDLER
--- Works with ALL LSP servers: rust-analyzer, tsserver, pyright, lua_ls, etc.
--- ============================================================================
-
--- Track buffers that have LSP attached to avoid duplicate autocmds
-local lsp_attached_buffers = {}
-
-vim.api.nvim_create_autocmd("LspAttach", {
-    group = diagnostic_group,
-    callback = function(args)
-        local bufnr = args.buf
-        local client = vim.lsp.get_client_by_id(args.data.client_id)
-        
-        if not client then return end
-        
-        -- Skip if we've already set up this buffer
-        if lsp_attached_buffers[bufnr] then return end
-        lsp_attached_buffers[bufnr] = true
-        
-        -- Create a unique buffer-local augroup
-        local buf_group_name = "LSPDiagnostics_" .. bufnr
-        local buf_group = vim.api.nvim_create_augroup(buf_group_name, { clear = true })
-        
-        -- Clean up when buffer is deleted
-        vim.api.nvim_create_autocmd("BufDelete", {
-            buffer = bufnr,
-            once = true,
-            callback = function()
-                lsp_attached_buffers[bufnr] = nil
-                pcall(vim.api.nvim_del_augroup_by_name, buf_group_name)
-            end,
-        })
-        
-        -- Only set up refresh triggers if diagnostics are enabled
-        if not diagnostics_state.enabled then return end
-        
-        -- Universal approach: Let LSP handle its own diagnostic timing
-        -- We just ensure the display settings are applied when diagnostics arrive
-        
-        -- Refresh display after leaving insert mode (for all LSPs)
-        vim.api.nvim_create_autocmd("InsertLeave", {
-            group = buf_group,
-            buffer = bufnr,
-            callback = function()
-                if diagnostics_state.enabled and vim.api.nvim_buf_is_valid(bufnr) then
-                    -- Just redraw the existing diagnostics with current settings
-                    -- Don't request new ones - LSP will send them automatically
-                    local ns = vim.diagnostic.get_namespaces()
-                    for _, namespace_id in pairs(ns) do
-                        local diags = vim.diagnostic.get(bufnr, { namespace = namespace_id })
-                        if #diags > 0 then
-                            vim.diagnostic.show(namespace_id, bufnr, diags, {})
-                        end
-                    end
-                end
-            end,
-        })
-        
-        -- Refresh display after saving (for all LSPs)
-        vim.api.nvim_create_autocmd("BufWritePost", {
-            group = buf_group,
-            buffer = bufnr,
-            callback = function()
-                if diagnostics_state.enabled and vim.api.nvim_buf_is_valid(bufnr) then
-                    -- Small delay to let LSP process the save
-                    vim.defer_fn(function()
-                        if vim.api.nvim_buf_is_valid(bufnr) then
-                            local ns = vim.diagnostic.get_namespaces()
-                            for _, namespace_id in pairs(ns) do
-                                local diags = vim.diagnostic.get(bufnr, { namespace = namespace_id })
-                                if #diags > 0 then
-                                    vim.diagnostic.show(namespace_id, bufnr, diags, {})
-                                end
-                            end
-                        end
-                    end, 100)
-                end
-            end,
-        })
-    end,
-})
-
--- Manual refresh command (works for all LSP servers)
-vim.api.nvim_create_user_command('DiagnosticRefresh', function()
-    local bufnr = vim.api.nvim_get_current_buf()
-    if vim.api.nvim_buf_is_valid(bufnr) then
-        local ns = vim.diagnostic.get_namespaces()
-        for _, namespace_id in pairs(ns) do
-            local diags = vim.diagnostic.get(bufnr, { namespace = namespace_id })
-            vim.diagnostic.show(namespace_id, bufnr, diags, {})
-        end
-        vim.notify('Diagnostics refreshed', vim.log.levels.INFO)
-    end
-end, { desc = 'Force refresh diagnostic display' })
-
-vim.keymap.set('n', '<leader>udr', '<cmd>DiagnosticRefresh<CR>', { desc = 'Refresh Diagnostics' })
-
--- Optional: Add a command to check LSP diagnostic status
-vim.api.nvim_create_user_command('DiagnosticInfo', function()
-    local bufnr = vim.api.nvim_get_current_buf()
-    local clients = vim.lsp.get_clients({ bufnr = bufnr })
-    
-    if #clients == 0 then
-        vim.notify('No LSP clients attached', vim.log.levels.WARN)
-        return
-    end
-    
-    local info = { 'LSP Diagnostic Info:', '' }
-    for _, client in ipairs(clients) do
-        table.insert(info, string.format('Client: %s', client.name))
-        local ns = vim.lsp.diagnostic.get_namespace(client.id)
-        local diags = vim.diagnostic.get(bufnr, { namespace = ns })
-        table.insert(info, string.format('  Diagnostics: %d', #diags))
-    end
-    
-    table.insert(info, '')
-    table.insert(info, string.format('Total diagnostics: %d', #vim.diagnostic.get(bufnr)))
-    table.insert(info, string.format('Enabled: %s', diagnostics_state.enabled))
-    table.insert(info, string.format('Signs: %s', diagnostics_state.signs))
-    table.insert(info, string.format('Underline: %s', diagnostics_state.underline))
-    
-    vim.notify(table.concat(info, '\n'), vim.log.levels.INFO)
-end, { desc = 'Show LSP diagnostic information' })
-
-vim.keymap.set('n', '<leader>udi', '<cmd>DiagnosticInfo<CR>', { desc = 'Diagnostic Info' })
+return M

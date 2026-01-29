@@ -1,3 +1,5 @@
-require("autopairs.autopairs")
-require("autopairs.autopair_rule")
-require("themes.gruvbox")
+vim.defer_fn(function()
+    require('autopairs.autopairs')
+    require('autopairs.autopair_rule')
+end, 200)
+require('themes.gruvbox')
