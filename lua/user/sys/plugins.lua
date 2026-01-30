@@ -379,6 +379,11 @@ require('lazy').setup({
         colorscheme = { 'catppuccin' }, -- Fallback colorscheme during install
     },
 
+    rocks = {
+        enabled = false, -- unnecessary for now
+        hererocks = false, -- use system one
+    },
+
     checker = {
         enabled = false,
         notify = false,

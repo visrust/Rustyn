@@ -1,80 +1,41 @@
--- Default options:
-require("gruvbox").setup({
-  terminal_colors = true, -- add neovim terminal colors
-  undercurl = true,
-  underline = true,
-  bold = true,
-  italic = {
-    strings = true,
-    emphasis = true,
-    comments = true,
-    operators = false,
-    folds = true,
-  },
-  strikethrough = true,
-  invert_selection = false,
-  invert_signs = false,
-  invert_tabline = false,
-  inverse = true, -- invert background for search, diffs, statuslines and errors
-  contrast = "hard", -- can be "hard", "soft" or empty string
-  palette_overrides = {},
-  overrides = {},
-  dim_inactive = false,
-  transparent_mode = false,
-})
-vim.cmd("colorscheme gruvbox")
-vim.api.nvim_create_autocmd('ColorScheme', {
-    pattern = 'gruvbox',
-    callback = function()
-        -- link common columns to Normal
-        local link = { link = 'Normal' }
-        for _, g in ipairs({
-            'SignColumn',
-        }) do
-            vim.api.nvim_set_hl(0, g, link)
-        end
-
-        -- fetch base colors
-        local normal = vim.api.nvim_get_hl(0, { name = 'Normal' })
-        local error  = vim.api.nvim_get_hl(0, { name = 'Error' })
-        local warn   = vim.api.nvim_get_hl(0, { name = 'WarningMsg' })
-        local info   = vim.api.nvim_get_hl(0, { name = 'Identifier' })
-        local hint   = vim.api.nvim_get_hl(0, { name = 'Comment' })
-
-        -- diagnostics: fg from severity, bg from Normal
-        vim.api.nvim_set_hl(0, 'DiagnosticSignError', {
-            fg = error.fg,
-            bg = normal.bg,
-        })
-
-        vim.api.nvim_set_hl(0, 'DiagnosticSignWarn', {
-            fg = warn.fg,
-            bg = normal.bg,
-        })
-
-        vim.api.nvim_set_hl(0, 'DiagnosticSignInfo', {
-            fg = info.fg,
-            bg = normal.bg,
-        })
-
-        vim.api.nvim_set_hl(0, 'DiagnosticSignHint', {
-            fg = hint.fg,
-            bg = normal.bg,
-        })
-    end,
+require('gruvbox').setup({
+    terminal_colors = true,
+    bold = true,
+    italic = {
+        strings = true,
+        emphasis = true,
+        comments = true,
+        folds = true,
+    },
+    contrast = 'hard',
 })
 
-vim.api.nvim_create_user_command("GruvboxHard", function()
-  require("gruvbox").setup({ contrast = "hard"  })
-  vim.cmd("colorscheme gruvbox")
-end, {})
+local function gruvbox_overrides()
+  local hl = vim.api.nvim_get_hl
+  local set = vim.api.nvim_set_hl
 
-vim.api.nvim_create_user_command("GruvboxSoft", function()
-  require("gruvbox").setup({ contrast = "soft"  })
-  vim.cmd("colorscheme gruvbox")
-end, {})
+  local normal = hl(0, { name = "Normal" })
 
-vim.api.nvim_create_user_command("GruvboxDefault", function()
-  require("gruvbox").setup({ contrast = ""  })
-  vim.cmd("colorscheme gruvbox")
-end, {})
+  set(0, "SignColumn", { link = "Normal" })
+
+  set(0, "DiagnosticSignError", { link = "Error" })
+  set(0, "DiagnosticSignWarn",  { link = "WarningMsg" })
+  set(0, "DiagnosticSignInfo",  { link = "Identifier" })
+  set(0, "DiagnosticSignHint",  { link = "Comment" })
+
+  -- enforce background match
+  for _, g in ipairs({
+    "DiagnosticSignError",
+    "DiagnosticSignWarn",
+    "DiagnosticSignInfo",
+    "DiagnosticSignHint",
+  }) do
+    local fg = hl(0, { name = g }).fg
+    set(0, g, { fg = fg, bg = normal.bg })
+  end
+end
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "gruvbox",
+  callback = gruvbox_overrides,
+})
