@@ -1,7 +1,7 @@
 vim.defer_fn(function ()
 require('leap').setup({
     max_phase_one_targets = nil,
-    highlight_unlabeled_phase_one_targets = false,
+    highlight_unlabeled_phase_one_targets = true,
     max_highlighted_traversal_targets = 10,
     case_sensitive = false,
     equivalence_classes = { ' \t\r\n' },
