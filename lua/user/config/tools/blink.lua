@@ -12,7 +12,7 @@ vim.api.nvim_set_hl(0, 'LspReferenceText', { underline = false, bg = 'NONE' })
 require('blink.cmp').setup({
     appearance = {
         use_nvim_cmp_as_default = false,
-        nerd_font_variant = 'normal',
+        nerd_font_variant = 'mono',
 
         kind_icons = {
             Text          = '󰉿',
@@ -73,55 +73,55 @@ require('blink.cmp').setup({
                     { 'label',     'label_description', gap = 1 },
                 },
 
-                components = {
-                    kind_icon = {
-                        ellipsis = false,
-                        text = function(ctx)
-                            return ctx.kind_icon .. ctx.icon_gap
-                        end,
-                        highlight = function(ctx)
-                            return { { group = ctx.kind_hl, priority = 20000 } }
-                        end,
-                    },
+                -- components = {
+                --     kind_icon = {
+                --         ellipsis = false,
+                --         text = function(ctx)
+                --             return ctx.kind_icon .. ctx.icon_gap
+                --         end,
+                --         highlight = function(ctx)
+                --             return { { group = ctx.kind_hl, priority = 20000 } }
+                --         end,
+                --     },
+                --
+                --     kind = {
+                --         width = { max = 20 },
+                --         text = function(ctx) return ctx.kind end,
+                --         highlight = function(ctx) return ctx.kind_hl end,
+                --     },
 
-                    kind = {
-                        width = { max = 20 },
-                        text = function(ctx) return ctx.kind end,
-                        highlight = function(ctx) return ctx.kind_hl end,
-                    },
-
-                    label = {
-                        width = { fill = true, max = 20 },
-                        text = function(ctx) return ctx.label .. ctx.label_detail end,
-                        highlight = function(ctx)
-                            local highlights = {
-                                { 0, #ctx.label, group = ctx.deprecated and 'BlinkCmpLabelDeprecated' or 'BlinkCmpLabel' },
-                            }
-                            if ctx.label_detail then
-                                table.insert(highlights,
-                                    { #ctx.label, #ctx.label + #ctx.label_detail, group =
-                                    'BlinkCmpLabelDetail' })
-                            end
-                            for _, idx in ipairs(ctx.label_matched_indices) do
-                                table.insert(highlights,
-                                    { idx, idx + 1, group = 'BlinkCmpLabelMatch' })
-                            end
-                            return highlights
-                        end,
-                    },
-
-                    label_description = {
-                        width = { max = 30 },
-                        text = function(ctx) return ctx.label_description end,
-                        highlight = 'BlinkCmpLabelDescription',
-                    },
-                },
+                    -- label = {
+                    --     width = { fill = true, max = 40 },
+                    --     text = function(ctx) return ctx.label .. ctx.label_detail end,
+                    --     highlight = function(ctx)
+                    --         local highlights = {
+                    --             { 0, #ctx.label, group = ctx.deprecated and 'BlinkCmpLabelDeprecated' or 'BlinkCmpLabel' },
+                    --         }
+                    --         if ctx.label_detail then
+                    --             table.insert(highlights,
+                    --                 { #ctx.label, #ctx.label + #ctx.label_detail, group =
+                    --                 'BlinkCmpLabelDetail' })
+                    --         end
+                    --         for _, idx in ipairs(ctx.label_matched_indices) do
+                    --             table.insert(highlights,
+                    --                 { idx, idx + 1, group = 'BlinkCmpLabelMatch' })
+                    --         end
+                    --         return highlights
+                    --     end,
+                    -- },
+                    --
+                    -- label_description = {
+                    --     width = { max = 30 },
+                    --     text = function(ctx) return ctx.label_description end,
+                    --     highlight = 'BlinkCmpLabelDescription',
+                    -- },
+                -- },
             },
             auto_show = true,
         },
 
         documentation = {
-            auto_show = true,
+            auto_show = false,
             auto_show_delay_ms = 200,
             treesitter_highlighting = true,
 
@@ -151,14 +151,14 @@ require('blink.cmp').setup({
 
     keymap = {
         preset = 'default',
-        ['<C-space>'] = { 'show', 'show_documentation' },
+        ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation'},
         ['<C-e>'] = { 'hide', 'hide_documentation' },
-        ['<C-k>'] = { 'show_documentation', 'hide_documentation' },
+        ['<C-k>'] = { 'show_documentation'},
         ['<CR>'] = { 'accept', 'fallback' },
-        ['<Tab>'] = { 'snippet_forward', 'select_next', 'fallback' },
-        ['<S-Tab>'] = { 'snippet_backward', 'select_prev', 'fallback' },
-        ['<C-n>'] = { 'select_next', 'fallback' },
-        ['<C-p>'] = { 'select_prev', 'fallback' },
+        -- ['<Tab>'] = { 'snippet_forward', 'select_next', 'fallback' },
+        -- ['<S-Tab>'] = { 'snippet_backward', 'select_prev', 'fallback' },
+        -- ['<C-n>'] = { 'select_next', 'fallback' },
+        -- ['<C-p>'] = { 'select_prev', 'fallback' },
         ['<Down>'] = { 'select_next', 'fallback' },
         ['<Up>'] = { 'select_prev', 'fallback' },
         ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
@@ -176,8 +176,8 @@ require('blink.cmp').setup({
         keymap = {
             preset = 'super-tab',
             ['<CR>'] = { 'accept', 'fallback' },
-            ['<Tab>'] = { 'select_next', 'fallback' },
-            ['<S-Tab>'] = { 'select_prev', 'fallback' },
+            -- ['<Tab>'] = { 'select_next', 'fallback' },
+            -- ['<S-Tab>'] = { 'select_prev', 'fallback' },
             ['<C-n>'] = { 'select_next', 'fallback' },
             ['<C-p>'] = { 'select_prev', 'fallback' },
         },
