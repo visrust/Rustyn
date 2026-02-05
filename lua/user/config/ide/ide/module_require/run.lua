@@ -21,6 +21,14 @@ local function run_filetype_command()
 
     if ft == 'rust' then
         cmd = 'cargo run'
+    elseif ft == 'zig' then
+        -- Smart Zig runner: detects if you're in a project or standalone file
+        local build_file = vim.fn.findfile('build.zig', '.;')
+        if build_file ~= '' then
+            cmd = 'zig build run'         -- Project with build.zig
+        else
+            cmd = 'zig run ' .. file_name -- Standalone file
+        end
     elseif ft == 'python' then
         cmd = 'python3 ' .. file_name
     elseif ft == 'lua' then
@@ -55,28 +63,30 @@ local function run_filetype_command()
                 runner_term = Terminal:new({
                     cmd = vim.o.shell,
                     hidden = true,
-                    direction = "float",
+                    direction = 'float',
                     float_opts = {
-                        border = "curved",
+                        border = 'curved',
                         width = math.floor(vim.o.columns * 0.9),
                         height = math.floor(vim.o.lines * 0.9),
                     },
                     on_open = function(term)
-                        vim.cmd("startinsert!")
-                        vim.api.nvim_buf_set_keymap(term.bufnr, "t", "<C-\\>", "<cmd>close<CR>", {noremap = true, silent = true})
-                        vim.api.nvim_buf_set_keymap(term.bufnr, "t", "<leader>xz", "<cmd>close<CR>", {noremap = true, silent = true})
+                        vim.cmd('startinsert!')
+                        vim.api.nvim_buf_set_keymap(term.bufnr, 't', '<C-\\>', '<cmd>close<CR>',
+                            { noremap = true, silent = true })
+                        vim.api.nvim_buf_set_keymap(term.bufnr, 't', '<leader>xz', '<cmd>close<CR>',
+                            { noremap = true, silent = true })
                     end,
                     on_close = function()
-                        vim.cmd("startinsert!")
+                        vim.cmd('startinsert!')
                     end,
                 })
             end
-            
+
             -- Using toggleterm
             if not runner_term:is_open() then
                 runner_term:open()
             end
-            
+
             -- Send commands to toggleterm
             runner_term:send('cd ' .. vim.fn.shellescape(file_dir))
             runner_term:send('clear')

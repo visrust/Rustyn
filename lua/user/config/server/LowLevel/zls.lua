@@ -1,17 +1,16 @@
-local lspconfig = require("lspconfig")
+local capabilities = require('blink.cmp').get_lsp_capabilities()
 
-lspconfig.zls.setup({
-  cmd = { "zls" },
-  filetypes = { "zig" },
-  root_dir = lspconfig.util.root_pattern(
-    "build.zig",
-    ".git"
-  ),
-  settings = {
-    zls = {
-      enable_inlay_hints = true,
-      enable_snippets = true,
-      warn_style = true,
+vim.lsp.config('zls', {
+    cmd = { 'zls' },
+    filetypes = { 'zig', 'zir' },
+    root_markers = { 'zls.json', 'build.zig', '.git' },
+    capabilities = capabilities,
+    flags = {
+        debounce_text_changes = 300,  -- Same as your Rust setup
     },
-  },
 })
+
+vim.lsp.enable('zls')
+
+-- Disable annoying shutdown errors
+vim.lsp.handlers["$/progress"] = function() end
