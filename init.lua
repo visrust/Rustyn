@@ -115,3 +115,18 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     end)
   end,
 })
+-- Make unnecessary code use Warn color but NO underline
+vim.api.nvim_set_hl(0, "DiagnosticUnnecessary", { link = "DiagnosticWarn" })
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineUnnecessary", { 
+    fg = "NONE",
+    bg = "NONE",
+    sp = "NONE",
+    undercurl = false,
+    underline = false,
+})
+
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineError",       { link = "DiagnosticError" })
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineWarn",        { link = "DiagnosticWarn" })
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineInfo",        { link = "DiagnosticInfo" })
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint",        { link = "DiagnosticHint" })
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineUnnecessary", { link = "DiagnosticUnnecessary" })
