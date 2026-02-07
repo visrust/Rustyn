@@ -191,7 +191,7 @@ DustNvim is optimized for both, but desktop will always be faster. Termux config
 ```bash
 # Clone stable version
 mkdir -p ~/.config/dusn && cd ~/.config/dusn
-git clone --depth 1 --branch v1.0.0 https://github.com/visrust/DustNvim.git .
+git clone --branch v1.5 --depth=1 https://github.com/visrust/dustnvim.git .
 # First launch (auto-installs plugins)
 NVIM_APPNAME=dusn nvim
 ```
