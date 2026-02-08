@@ -43,14 +43,14 @@
 
 ```bash
 # Clone it
-mkdir -p ~/.config/dusn && cd ~/.config/dusn
-git clone --branch v1.5 --depth=1 https://github.com/visrust/dustnvim.git .
+mkdir -p ~/.config/dn && cd ~/.config/dn
+git clone --branch v1.6 --depth=1 https://github.com/visrust/dustnvim.git .
 
 # Launch it
-NVIM_APPNAME=dusn nvim
+NVIM_APPNAME=dn nvim
 
 # Optional: Add alias
-echo "alias dusn='NVIM_APPNAME=dusn nvim'" >> ~/.bashrc && source ~/.bashrc
+echo "alias dn='NVIM_APPNAME=dn nvim'" >> ~/.bashrc && source ~/.bashrc
 ```
 
 **That's it.** Plugins auto-install on first launch. Restart once and you're ready.
@@ -206,13 +206,16 @@ Found a bug? Want to add a feature? PRs welcome!
 <summary><b>📁 Architecture Overview</b></summary>
 
 ```
-dusn/
-├── init.lua                    # Entry point
-└── lua/user/
-    ├── stages/                 # Sequential loading (01→07)
-    ├── config/server/          # LSP servers by category
-    ├── ui/core/                # UI components
-    └── snippets/               # Code snippets
+ lua
+└──  user
+    ├──  config
+    ├──  mini 
+    ├──  other
+    ├──  profiler.lua
+    ├──  snippets
+    ├──  stages
+    ├──  sys
+    └──  ui
 ```
 
 </details>
@@ -222,23 +225,24 @@ dusn/
 
 | Key | Action |
 |-----|--------|
-| `<Space>` | Show all commands (Which-Key) |
+| `<Space>` | Show space based mappings cheat sheet|
+| `<Space>fz` + pick `keymaps` | Show all keymaps via fuzzy |
 | `m` + 2 chars | Leap to location |
 | `-` | File explorer |
 | `K` | LSP hover |
-| `<Space>f` | Fuzzy find files |
+| `tt` | view low priority diagnostics of current line|
+| `<Space>f` based maps | Full fuzzy based maps|
 | `<Space>gl` | Lazygit |
-| `<C-\>` | Toggle terminal |
+| `<Space>tf` | Toggle terminal |
 
-**39 total keybindings** - discover them with `<Space>`!
-
+*Pro Tip* : Use fuzzy to search for keymaps easily
 </details>
 
 <details>
 <summary><b>🗑️ Uninstall</b></summary>
 
 ```bash
-rm -rf ~/.config/dusn/ ~/.local/share/dusn/ ~/.local/state/dusn/ ~/.cache/dusn/
+rm -rf ~/.config/dn/ ~/.local/share/dn/ ~/.local/state/dn/ ~/.cache/dn/
 ```
 
 </details>
