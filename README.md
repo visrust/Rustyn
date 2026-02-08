@@ -2,7 +2,7 @@
 
 <div align="center">
 
-### **Your IDE. 300ms startup. Zero bloat.**
+### **🦀 Dust Nvim is a Neovim configuration that aims to provide an IDE-like experience while preserving Neovim’s minimalism. Supports multiple languages out of the box, promotes a cleaner code culture, and enables smarter, less noisy coding.**
 
 *Stop configuring. Start coding.*
 
