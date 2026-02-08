@@ -5,7 +5,7 @@ vim.g.loaded_perl_provider = 0
 vim.lsp.set_log_level('warn')
 
 _G.map = vim.keymap.set
-vim.opt.fillchars:append({ eob = " " })
+vim.opt.fillchars:append({ eob = ' ' })
 -- =========================================================
 -- 1. Safe require helper
 -- =========================================================
@@ -28,7 +28,7 @@ end
 local function load_stages()
     local stages_path = vim.fn.stdpath('config') .. '/lua/user/stages'
     local files = vim.fn.readdir(stages_path)
-    
+
     -- Filter for .lua files and sort them numerically
     local lua_files = {}
     for _, file in ipairs(files) do
@@ -36,7 +36,7 @@ local function load_stages()
             table.insert(lua_files, file)
         end
     end
-    
+
     -- Sort numerically by extracting leading numbers
     table.sort(lua_files, function(a, b)
         local num_a = tonumber(a:match('^(%d+)'))
@@ -44,9 +44,9 @@ local function load_stages()
         if num_a and num_b then
             return num_a < num_b
         end
-        return a < b  -- Fallback to alphabetical
+        return a < b -- Fallback to alphabetical
     end)
-    
+
     -- Load each stage in order
     for _, file in ipairs(lua_files) do
         local module_name = file:gsub('%.lua$', '')
@@ -60,58 +60,85 @@ load_stages()
 -- =========================================================
 -- 3. Post-init
 -- =========================================================
-vim.cmd.colorscheme("tokyonight-night")
+vim.cmd.colorscheme('nightfox')
 
 
 local function safe_cursor_line_fix()
-  local cl = vim.api.nvim_get_hl(0, { name = "CursorLine" })
-  local clr = vim.api.nvim_get_hl(0, { name = "CursorLineNr" })
-  
-  -- Only proceed if we have the data we need
-  if not cl or not clr then
-    return
-  end
-  
-  -- Build highlight table safely
-  local hl = {}
-  
-  if clr.fg then
-    hl.fg = clr.fg
-  end
-  
-  if cl.bg then
-    hl.bg = cl.bg
-  end
-  
-  if clr.bold then
-    hl.bold = true
-  end
-  
-  -- Only set if we have something to set
-  if next(hl) then
-    vim.api.nvim_set_hl(0, "CursorLineNr", hl)
-  end
-  
-  -- CursorLineSign with fallback
-  if cl.bg then
-    vim.api.nvim_set_hl(0, "CursorLineSign", { bg = cl.bg })
-  end
+    local cl = vim.api.nvim_get_hl(0, { name = 'CursorLine' })
+    local clr = vim.api.nvim_get_hl(0, { name = 'CursorLineNr' })
+
+    -- Only proceed if we have the data we need
+    if not cl or not clr then
+        return
+    end
+
+    -- Build highlight table safely
+    local hl = {}
+
+    if clr.fg then
+        hl.fg = clr.fg
+    end
+
+    if cl.bg then
+        hl.bg = cl.bg
+    end
+
+    if clr.bold then
+        hl.bold = true
+    end
+
+    -- Only set if we have something to set
+    if next(hl) then
+        vim.api.nvim_set_hl(0, 'CursorLineNr', hl)
+    end
+
+    -- CursorLineSign with fallback
+    if cl.bg then
+        vim.api.nvim_set_hl(0, 'CursorLineSign', { bg = cl.bg })
+    end
 end
 
 -- Run safely
 local ok, err = pcall(safe_cursor_line_fix)
 if not ok then
-  vim.notify("CursorLine fix failed: " .. tostring(err), vim.log.levels.WARN)
+    vim.notify('CursorLine fix failed: ' .. tostring(err), vim.log.levels.WARN)
 end
 
 
-vim.api.nvim_create_autocmd("ColorScheme", {
-  callback = function()
-    vim.schedule(function()
-      local ok = pcall(safe_cursor_line_fix)
-      if not ok then
-        -- Silently fail, don't spam user
-      end
-    end)
-  end,
+vim.api.nvim_create_autocmd('ColorScheme', {
+    callback = function()
+        vim.schedule(function()
+            local ok = pcall(safe_cursor_line_fix)
+            if not ok then
+                -- Silently fail, don't spam user
+            end
+        end)
+    end,
 })
+
+-- Base group
+vim.api.nvim_set_hl(0, 'DiagnosticUnnecessary', { link = 'DiagnosticWarn' })
+
+-- Explicitly disable underline
+vim.api.nvim_set_hl(0, 'DiagnosticUnderlineUnnecessary', {
+    underline = false,
+    undercurl = false,
+    sp = 'NONE',
+})
+
+local function bold_diag_underline(name, target)
+    local hl = vim.api.nvim_get_hl(0, { name = target, link = false })
+
+    vim.api.nvim_set_hl(0, name, {
+        fg = hl.fg,
+        sp = hl.fg,
+        bold = true,
+        underline = true,
+    })
+end
+
+-- Apply ONLY to severities that should underline
+bold_diag_underline('DiagnosticUnderlineError', 'DiagnosticError')
+bold_diag_underline('DiagnosticUnderlineWarn',  'DiagnosticWarn')
+bold_diag_underline('DiagnosticUnderlineInfo',  'DiagnosticInfo')
+bold_diag_underline('DiagnosticUnderlineHint',  'DiagnosticHint')
