@@ -1,15 +1,16 @@
 local dap = require("dap")
 
 -- Debug execution
-vim.keymap.set("n", "<leader>dc", dap.continue, {
+map("n", "<leader>dd", "",{desc = "Debug"});
+vim.keymap.set("n", "<leader>ddc", dap.continue, {
     desc = "Debug: Continue / Start",
 })
 
-vim.keymap.set("n", "<leader>dn", dap.step_over, {
+vim.keymap.set("n", "<leader>ddn", dap.step_over, {
     desc = "Debug: Step Over",
 })
 
-vim.keymap.set("n", "<leader>di", dap.step_into, {
+vim.keymap.set("n", "<leader>ddi", dap.step_into, {
     desc = "Debug: Step Into",
 })
 
@@ -18,11 +19,11 @@ vim.keymap.set("n", "<leader>do", dap.step_out, {
 })
 
 -- Breakpoints
-vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, {
+vim.keymap.set("n", "<leader>ddb", dap.toggle_breakpoint, {
     desc = "Debug: Toggle Breakpoint",
 })
 
-vim.keymap.set("n", "<leader>dB", function()
+vim.keymap.set("n", "<leader>ddB", function()
     dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
 end, {
     desc = "Debug: Conditional Breakpoint",
