@@ -17,6 +17,7 @@
   "leap.nvim": { "branch": "main", "commit": "f19d43590c4b6d31188ee1ea2954d2b7558a9e11" },
   "logger.nvim": { "branch": "main", "commit": "63dd10c9b9a159fd6cfe08435d9606384ff103c5" },
   "lspkind-nvim": { "branch": "master", "commit": "c7274c48137396526b59d86232eabcdc7fed8a32" },
+  "lspsaga.nvim": { "branch": "main", "commit": "8efe00d6aed9db6449969f889170f1a7e43101a1" },
   "lualine.nvim": { "branch": "master", "commit": "47f91c416daef12db467145e16bed5bbfe00add8" },
   "mini.icons": { "branch": "main", "commit": "efc85e42262cd0c9e1fdbf806c25cb0be6de115c" },
   "mini.indentscope": { "branch": "main", "commit": "0308f949f31769e509696af5d5f91cebb2159c69" },

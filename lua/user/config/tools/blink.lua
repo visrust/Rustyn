@@ -1,6 +1,7 @@
 -- ============================================================================
 -- OPTIMIZED Blink.cmp Configuration
 -- Loads core immediately, defers heavy UI setup
+-- Do not try to do any changes
 -- ============================================================================
 
 -- Set highlight overrides first (cheap)
@@ -72,50 +73,6 @@ require('blink.cmp').setup({
                     { 'kind_icon', 'kind',              gap = 1 },
                     { 'label',     'label_description', gap = 1 },
                 },
-
-                -- components = {
-                --     kind_icon = {
-                --         ellipsis = false,
-                --         text = function(ctx)
-                --             return ctx.kind_icon .. ctx.icon_gap
-                --         end,
-                --         highlight = function(ctx)
-                --             return { { group = ctx.kind_hl, priority = 20000 } }
-                --         end,
-                --     },
-                --
-                --     kind = {
-                --         width = { max = 20 },
-                --         text = function(ctx) return ctx.kind end,
-                --         highlight = function(ctx) return ctx.kind_hl end,
-                --     },
-
-                    -- label = {
-                    --     width = { fill = true, max = 40 },
-                    --     text = function(ctx) return ctx.label .. ctx.label_detail end,
-                    --     highlight = function(ctx)
-                    --         local highlights = {
-                    --             { 0, #ctx.label, group = ctx.deprecated and 'BlinkCmpLabelDeprecated' or 'BlinkCmpLabel' },
-                    --         }
-                    --         if ctx.label_detail then
-                    --             table.insert(highlights,
-                    --                 { #ctx.label, #ctx.label + #ctx.label_detail, group =
-                    --                 'BlinkCmpLabelDetail' })
-                    --         end
-                    --         for _, idx in ipairs(ctx.label_matched_indices) do
-                    --             table.insert(highlights,
-                    --                 { idx, idx + 1, group = 'BlinkCmpLabelMatch' })
-                    --         end
-                    --         return highlights
-                    --     end,
-                    -- },
-                    --
-                    -- label_description = {
-                    --     width = { max = 30 },
-                    --     text = function(ctx) return ctx.label_description end,
-                    --     highlight = 'BlinkCmpLabelDescription',
-                    -- },
-                -- },
             },
             auto_show = true,
         },
@@ -149,20 +106,21 @@ require('blink.cmp').setup({
         default = { 'lsp', 'path', 'snippets', 'buffer' },
     },
 
+    --Warn: use these mappings and do not try to play with fallback
     keymap = {
-        preset = 'default',
+        preset = 'none',
         ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation'},
         ['<C-e>'] = { 'hide', 'hide_documentation' },
         ['<C-k>'] = { 'show_documentation'},
-        ['<CR>'] = { 'accept', 'fallback' },
-        -- ['<Tab>'] = { 'snippet_forward', 'select_next', 'fallback' },
-        -- ['<S-Tab>'] = { 'snippet_backward', 'select_prev', 'fallback' },
-        -- ['<C-n>'] = { 'select_next', 'fallback' },
-        -- ['<C-p>'] = { 'select_prev', 'fallback' },
-        ['<Down>'] = { 'select_next', 'fallback' },
-        ['<Up>'] = { 'select_prev', 'fallback' },
-        ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
-        ['<C-d>'] = { 'scroll_documentation_down', 'fallback' },
+        ['<CR>'] = { 'accept', 'fallback'},
+        -- ['<C-n>'] = { 'select_next'},
+        -- ['<C-p>'] = { 'select_prev'},
+        ['<Down>'] = { 'select_next', 'fallback'},
+        ['<Up>'] = { 'select_prev', 'fallback'},
+        ['<Tab>'] = { 'select_next', 'fallback'},
+        ['<S-Tab>'] = { 'select_prev', 'fallback'},
+        ['<C-u>'] = { 'scroll_documentation_up'},
+        ['<C-d>'] = { 'scroll_documentation_down'},
     },
 
     signature = {
@@ -173,11 +131,12 @@ require('blink.cmp').setup({
         enabled = true,
         sources = { 'cmdline' },
 
+        -- Warn : Keep as it is
         keymap = {
             preset = 'super-tab',
             ['<CR>'] = { 'accept', 'fallback' },
-            -- ['<Tab>'] = { 'select_next', 'fallback' },
-            -- ['<S-Tab>'] = { 'select_prev', 'fallback' },
+            ['<Tab>'] = { 'select_next', 'fallback' },
+            ['<S-Tab>'] = { 'select_prev', 'fallback' },
             ['<C-n>'] = { 'select_next', 'fallback' },
             ['<C-p>'] = { 'select_prev', 'fallback' },
         },
@@ -213,7 +172,8 @@ require('blink.cmp').setup({
     term = {
         enabled = true,
         sources = {},
-        keymap = { preset = 'inherit' },
+        -- Warm: Intentionally set to none
+        keymap = { preset = 'none' },
         completion = {
             trigger = {
                 show_on_blocked_trigger_characters = {},
@@ -253,13 +213,3 @@ blink_capabilities.textDocument.completion.completionItem = {
 
 -- Export capabilities for LSP servers to use
 _G.blink_capabilities = blink_capabilities
-
-
--- Adding new thing if anything unusal happens delete immediately
---
-vim.api.nvim_create_autocmd('CursorHold', {
-    callback = function()
-        -- Triggers every few seconds of inactivity
-        require('blink.cmp').reload()
-    end
-})
