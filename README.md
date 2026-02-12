@@ -44,7 +44,7 @@
 ```bash
 # Clone it
 mkdir -p ~/.config/archn && cd ~/.config/archn
-git clone --branch v1.9 --depth=1 https://github.com/visrust/arch-nvim.git .
+git clone --branch v2.0.1 --depth=1 https://github.com/visrust/arch-nvim.git .
 
 # Launch it
 NVIM_APPNAME=archn nvim
