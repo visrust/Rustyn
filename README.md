@@ -1,281 +1,288 @@
-🦀 Arch Nvim
+# 🦀 Arch Nvim
 
-<div align="center">A fast, curated Neovim configuration that delivers an IDE-like experience — without sacrificing minimalism.
+<div align="center">
 
-Modern languages. Clean UX. Zero bloat.
+### **🦀 Arch Nvim is a Neovim configuration that aims to provide an IDE-like experience while preserving Neovim’s minimalism. Supports multiple languages out of the box, promotes a cleaner code culture, and enables smarter, less noisy coding.**
 
-Stop configuring. Start coding.
+*Stop configuring. Start coding.*
 
-  
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Neovim](https://img.shields.io/badge/neovim-0.10+-green.svg)](https://neovim.io)
+[![Platform](https://img.shields.io/badge/platform-Linux%20|%20macOS%20|%20Termux-lightgrey.svg)]()
 
-🚀 Quick Start • 📸 Screenshots • ✨ Features
-
-</div>
----
-
-🖥️ The Everywhere IDE
-
-Arch Nvim is designed to feel consistent across:
-
-🐧 Linux
-
-🍎 macOS
-
-📱 Termux (mobile-first ready)
-
-
-Same experience. Same speed. No compromises.
-
-<div align="center"><!-- Screenshots -->     
+**[🚀 Quick Start](#-quick-start)** • **[📸 Screenshots](#-see-it-in-action)** • **[✨ What's Inside](#-whats-inside)**
 
 </div>
+
 ---
 
-🔤 Recommended Font
+## 🖥️The everywhere IDE 
 
-For the best experience, install JetBrains Mono Nerd Font.
+<div align="center">
 
+![Screenshot_20260208_085859](https://github.com/user-attachments/assets/e8877dab-af8d-4949-88aa-44d6683205d7)
+![Screenshot_20260208_090033](https://github.com/user-attachments/assets/a1cd2cd8-d9eb-4d04-9fd4-2c03ec12ab49)
+![Screenshot_20260208_084928](https://github.com/user-attachments/assets/4c91c9ee-75a7-49f9-957b-02eb95d90314)
+
+![Screenshot_20260208_090241](https://github.com/user-attachments/assets/d21c224f-bc23-4159-bad5-13637cfca9dd)
+
+![Screenshot_20260208_090137](https://github.com/user-attachments/assets/1a4a98f0-a725-447e-9415-724f756ec144)
+![Screenshot_20260208_085632](https://github.com/user-attachments/assets/eee31bca-5a46-4fdd-87e0-0b7a89a8a2ea)
+
+</div>
+
+---
+## Download JetBrains Nerd font 
+
+```sh 
 curl -OL https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/JetBrainsMono.tar.xz
+```
+
+### Open it 
+```sh 
 tar -xf JetBrainsMono.tar.xz
+```
 
-Termux Setup
+### Setup for termux 
 
+```sh 
 mkdir -p ~/.termux/
-mv ~/.termux/font.ttf ~/.termux/font.ttf.backup 2>/dev/null
+mv ~/.termux/font.ttf ~/.termux/prev_font.ttf.backup
 cp JetBrainsMonoNerdFont-Medium.ttf ~/.termux/font.ttf
 termux-reload-settings
+```
 
-> 💡 Refer to your distro’s documentation for changing terminal fonts.
-
-
-
+> [!TIP]
+> Check the guide of changing font for your soecific linux.
 
 ---
 
-🚀 Quick Start
+## 🚀 Quick stable download
 
-> ⚠ Treesitter requires clang or gcc.
+> [!WARN]
+> Without clang or gcc the treesitters wont compile 
+```sh 
+apt install clang 
+```
 
-
-
-# Termux
-pkg install clang
-
-Install Arch Nvim
-
+```bash
+# Clone it
 mkdir -p ~/.config/archn && cd ~/.config/archn
 git clone --branch v2.0.1 --depth=1 https://github.com/visrust/arch-nvim.git .
 
-echo "alias n='NVIM_APPNAME=archn nvim'" >> ~/.bashrc
-echo "alias n='NVIM_APPNAME=archn nvim'" >> ~/.zshrc
+echo "alias n='NVIM_APPNAME=archn nvim'" >> ~/.bashrc && source ~/.bashrc
+echo "alias n='NVIM_APPNAME=archn nvim'" >> ~/.zshrc && source ~/.zshrc
 
-source ~/.bashrc 2>/dev/null
-source ~/.zshrc 2>/dev/null
-
-Launch:
-
+# Launch it
 NVIM_APPNAME=archn nvim
+```
 
-> 📦 First install downloads ~200MB of plugins.
-After setup, you can reuse ~/.local/share/nvim/lazy/ for faster setups elsewhere.
-
-
-
+> [!IMPORTANT]
+> You will need avout 200 mbs of mobile data to setup the plugins. Don't worry once setuped you can every time clone the same binary to use in other arch-nvim based configurations by copying ~/.local/share/nvim/lazy/
 
 ---
 
-✨ Features
+## ✨ What's Inside
 
-⚡ Performance
+<table>
+<tr>
+<td width="50%">
 
-~250ms startup (desktop)
+### ⚡ **Speed**
+- **Less than 250ms** startup on desktop
+- **~300ms** on Termux (mobile)
+- **63 plugins**, zero bloat
+- Lazy loading done right
 
-~300ms startup (Termux)
+</td>
+<td width="50%">
 
-63 carefully selected plugins
+### 🦀 **Modern-Language-First**
+- rust-analyzer pre-configured with clippy
+- gopls pre-configured
+- clang pre-configured
+- lua pre-configured
+- pyright pre-configured
+- tsserver pre-configured
+- jsonls pre-configured
 
-Proper lazy-loading
+</td>
+</tr>
+<tr>
+<td width="50%">
 
-No unnecessary abstractions
+### 🎨 **5 Theme Collections**
+- Catppuccin (4 variants)
+- Tokyo Night (4 variants)
+- Rose Pine (3 variants)
+- Nightfox (7 variants)
+- Gruvbox (2 variants)
 
+Switch with `:SGT <theme>`
 
+</td>
+<td width="50%">
 
----
+### 📱 **Termux Native**
+- Built & tested on mobile
+- Performance tweaks included
+- Full feature parity
+- No desktop-only compromises
 
-🦀 Modern Language Ready
+</td>
+</tr>
+<tr>
+<td width="50%">
 
-Pre-configured LSP for:
+### 🛠️ **20 LSP Servers**
+Rust • C/C++ • Python • Go • TS/JS • Lua • Zig • Bash • Markdown • Docker • JSON • YAML • HTML • CSS • PHP • GDScript • Vim • ASM • CMake • Vale
 
-Rust • Go • C/C++ • Python • Lua • TypeScript • JSON
+</td>
+<td width="50%">
 
-Extended support (manual install):
+### 💡 **Smart Tools**
+- FzfLua fuzzy finding
+- Oil.nvim + Yazi file nav
+- Blink.cmp completion
+- Leap.nvim precision jumps
+- Lazygit integration
+- Trouble diagnostics
 
-Zig • Bash • Markdown • Docker • YAML • HTML • CSS • PHP • GDScript • Vim • ASM • CMake • Vale
-
-No Mason.
-You control your toolchain.
-
-
----
-
-🎨 Curated Themes (Switch Instantly)
-
-:SGT catppuccin-mocha
-:SGT rose-pine
-:SGT tokyonight-night
-:SGT nightfox
-:SGT gruvbox
-
-Includes:
-
-Catppuccin (4 variants)
-
-Tokyo Night (4 variants)
-
-Rose Pine (3 variants)
-
-Nightfox (7 variants)
-
-Gruvbox (2 variants)
-
-
-
----
-
-📱 Termux Native
-
-Built and optimized for mobile development:
-
-Performance tuned
-
-No desktop-only assumptions
-
-Full feature parity
-
-
-
----
-
-🧠 Smart Tooling
-
-FzfLua (blazing fast fuzzy search)
-
-Oil.nvim + Yazi (file management)
-
-Blink.cmp (completion)
-
-Leap.nvim (precision navigation)
-
-Lazygit integration
-
-Trouble diagnostics
-
-
-Press <Space> to explore all keybindings via Which-Key.
-
+</td>
+</tr>
+</table>
 
 ---
 
-🎯 Why Arch Nvim?
+## 🎯 Why Arch Nvim?
 
-Arch Nvim	Typical Config
+| Arch | Typical Configs |
+|----------|-----------------|
+| ⚡ <400ms startup | 🐌 2-5 seconds |
+| 📱 Termux tested | ❌ Often broken |
+| 🎨 5 curated theme sets | 🎲 Scattered themes |
+| 🦀 Rust pre-configured | 🔧 Manual setup |
+| 🎯 63 handpicked plugins | 📦 100+ bloat |
+| 🚀 Ready to use | ⏳ Endless tweaking |
 
-⚡ <400ms startup	🐌 2–5s startup
-📱 Mobile ready	❌ Often broken
-🎨 Curated themes	🎲 Random plugins
-🦀 Rust-first setup	🔧 Manual config
-🎯 63 intentional plugins	📦 100+ plugin sprawl
-🚀 Ready to code	⏳ Endless tweaking
-
-
+**Perfect for developers who want to code, not configure.**
 
 ---
 
-📦 Dependencies
+## 🎨 Try Different Looks
 
-Essential
+```vim
+:SGT catppuccin-mocha    " Cozy dark theme
+:SGT rose-pine           " Elegant minimalism  
+:SGT tokyonight-night    " Vibrant colors
+:SGT nightfox            " Natural palette
+:SGT gruvbox             " Retro warmth
+```
 
+Press `<Space>` to see all keybindings via Which-Key!
+
+---
+
+## 🛠️ Dependencies
+
+**Essential (5 tools):**
+```bash
 fzf ripgrep fd yazi lazygit
+```
 
-Recommended
-
+**Recommended:**
+```bash
 bat git-delta nodejs python3 gcc
+```
 
-
----
+**LSP servers:** Install manually as needed (no Mason). You control your toolchain.
 
 <details>
-<summary><b>Install Commands by OS</b></summary>Termux
+<summary><b>📦 Installation Commands</b></summary>
 
+```bash
+# Termux
 pkg install fzf ripgrep fd yazi lazygit git bat git-delta nodejs python clang
 
-Debian / Ubuntu
-
+# Debian/Ubuntu
 sudo apt install fzf ripgrep fd-find yazi lazygit git bat git-delta nodejs python3 build-essential
 
-Arch Linux
-
+# Arch Linux
 sudo pacman -S fzf ripgrep fd yazi lazygit git bat git-delta nodejs python gcc
 
-macOS
-
+# macOS
 brew install fzf ripgrep fd yazi lazygit git bat git-delta node python
+```
 
 </details>
----
-
-🏗 Architecture
-
-lua/user
-├── config
-├── mini
-├── other
-├── profiler.lua
-├── snippets
-├── stages
-├── sys
-└── ui
-
-Clean separation. Minimal magic.
-
 
 ---
 
-🧹 Uninstall
+## 🤝 Contributing
 
-rm -rf ~/.config/archn \
-       ~/.local/share/archn \
-       ~/.local/state/archn \
-       ~/.cache/archn
+Found a bug? Want to add a feature? PRs welcome!
 
+**Ideas:** Add LSP servers • Enhance themes • Improve docs • Fix bugs • Add snippets
 
----
-
-🤝 Contributing
-
-PRs welcome.
-
-Ideas:
-
-Improve docs
-
-Add snippets
-
-Extend LSP support
-
-Performance optimizations
-
-UX refinements
-
-
+[Read Contributing Guide](CONTRIBUTING.md)
 
 ---
 
-<div align="center">Built by developers who value speed and clarity.
+## 📚 Learn More
 
-Stop configuring. Start coding.
+<details>
+<summary><b>📁 Architecture Overview</b></summary>
 
-⭐ Star on GitHub • 🐛 Issues
+```
+ lua
+└──  user
+    ├──  config
+    ├──  mini 
+    ├──  other
+    ├──  profiler.lua
+    ├──  snippets
+    ├──  stages
+    ├──  sys
+    └──  ui
+```
+
+</details>
+
+<details>
+<summary><b>⌨️ Key Keybindings</b></summary>
+
+| Key | Action |
+|-----|--------|
+| `<Space>` | Show space based mappings cheat sheet|
+| `<Space>fz` + pick `keymaps` | Show all keymaps via fuzzy |
+| `m` + 2 chars | Leap to location |
+| `-` | File explorer |
+| `K` | LSP hover |
+| `tt` | view low priority diagnostics of current line|
+| `<Space>f` based maps | Full fuzzy based maps|
+| `<Space>gl` | Lazygit |
+| `<Space>tf` | Toggle terminal |
+
+*Pro Tip* : Use fuzzy to search for keymaps easily
+</details>
+
+<details>
+<summary><b>🗑️ Uninstall</b></summary>
+
+```bash
+rm -rf ~/.config/archn/ ~/.local/share/archn/ ~/.local/state/archn/ ~/.cache/archn/
+```
+
+</details>
+
+---
+
+<div align="center">
+
+### Built with ❤️ by developers, for developers
+
+**Stop configuring. Start coding.**
+
+[⭐ Star on GitHub](https://github.com/visrust/arch-nvim) • [🐛 Report Issues](https://github.com/visrust/arch-nvim/issues) • [💬 Discussions](https://github.com/visrust/arch-nvim/discussions)
 
 </div>
----
