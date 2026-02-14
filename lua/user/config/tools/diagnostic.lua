@@ -1,23 +1,7 @@
-vim.diagnostic.config({
-  signs = {
-    text = {
-      [vim.diagnostic.severity.ERROR] = "●",
-      [vim.diagnostic.severity.WARN]  = "●",
-      [vim.diagnostic.severity.INFO]  = "●",
-      [vim.diagnostic.severity.HINT]  = "●",
-    },
-  },
-  underline = true,
-  virtual_text = false,
-})
-
-vim.opt.signcolumn = "yes"
-
-
 require("tiny-inline-diagnostic").setup({
     -- Choose a preset style for diagnostic appearance
     -- Available: "modern", "classic", "minimal", "powerline", "ghost", "simple", "nonerdfont", "amongus"
-    preset = "modern",
+    preset = "classic",
 
     -- Make diagnostic background transparent
     transparent_bg = false,
@@ -63,23 +47,23 @@ require("tiny-inline-diagnostic").setup({
         throttle = 20,
 
         -- Minimum number of characters before wrapping long messages
-        softwrap = 60,
+        softwrap = 45,
 
         -- Control how diagnostic messages are displayed
         -- NOTE: When using display_count = true, you need to enable multiline diagnostics with multilines.enabled = true
         --       If you want them to always be displayed, you can also set multilines.always_show = true.
         add_messages = {
             messages = true,           -- Show full diagnostic messages
-            display_count = false,     -- Show diagnostic count instead of messages when cursor not on line
+            display_count = true,     -- Show diagnostic count instead of messages when cursor not on line
             use_max_severity = false,  -- When counting, only show the most severe diagnostic
             show_multiple_glyphs = true, -- Show multiple icons for multiple diagnostics of same severity
         },
 
         -- Settings for multiline diagnostics
         multilines = {
-            enabled = false,           -- Enable support for multiline diagnostic messages
+            enabled = true,           -- Enable support for multiline diagnostic messages
             always_show = false,       -- Always show messages on all lines of multiline diagnostics
-            trim_whitespaces = false,  -- Remove leading/trailing whitespace from each line
+            trim_whitespaces = true,  -- Remove leading/trailing whitespace from each line
             tabstop = 4,               -- Number of spaces per tab when expanding tabs
             severity = nil,            -- Filter multiline diagnostics by severity (e.g., { vim.diagnostic.severity.ERROR })
           },
@@ -106,12 +90,12 @@ require("tiny-inline-diagnostic").setup({
         -- Handle messages that exceed the window width
         overflow = {
             mode = "wrap",             -- "wrap": split into lines, "none": no truncation, "oneline": keep single line
-            padding = 0,               -- Extra characters to trigger wrapping earlier
+            padding = 2,               -- Extra characters to trigger wrapping earlier
         },
 
         -- Break long messages into separate lines
         break_line = {
-            enabled = true,           -- Enable automatic line breaking
+            enabled = false,           -- Enable automatic line breaking
             after = 60,                -- Number of characters before inserting a line break
         },
 

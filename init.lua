@@ -121,7 +121,8 @@ local function apply_diag_hls()
     -- Base group
     vim.api.nvim_set_hl(0, 'DiagnosticUnnecessary', {
         link = 'DiagnosticWarn',
-        standout = true,
+        bold = true,
+        -- standout = true,
     })
 
     -- Explicitly disable underline
@@ -129,7 +130,8 @@ local function apply_diag_hls()
         underline = true,
         nocombine = true,
         undercurl = false,
-        standout = true,
+        bold = true,
+        -- standout = true,
         sp = 'NONE',
     })
 
@@ -141,7 +143,7 @@ local function apply_diag_hls()
             sp = hl.fg,
             bold = true,
             underline = false,
-            standout = true,
+            -- standout = true,
         })
     end
 
