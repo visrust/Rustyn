@@ -68,7 +68,7 @@ apt install clang
 ```bash
 # Clone it
 mkdir -p ~/.config/archn && cd ~/.config/archn
-git clone --branch v2.0.3 --depth=1 https://github.com/visrust/arch-nvim.git .
+git clone --branch v2.0.4 --depth=1 https://github.com/visrust/arch-nvim.git .
 
 echo "alias n='NVIM_APPNAME=archn nvim'" >> ~/.bashrc && source ~/.bashrc
 echo "alias n='NVIM_APPNAME=archn nvim'" >> ~/.zshrc && source ~/.zshrc
