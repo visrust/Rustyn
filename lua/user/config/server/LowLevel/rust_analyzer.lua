@@ -20,7 +20,7 @@ lspconfig.rust_analyzer.setup({
             cargo = {
                 allFeatures = false,
                 buildScripts = {
-                    enable = false,
+                    enable = true,
                 },
             },
 
@@ -46,6 +46,6 @@ lspconfig.rust_analyzer.setup({
     },
 })
 
--- vim.lsp.handlers["workspace/diagnostic/refresh"] = function(_, _, ctx)
---     return vim.NIL
--- end
+vim.lsp.handlers["workspace/diagnostic/refresh"] = function(_, _, ctx)
+    return vim.NIL
+end

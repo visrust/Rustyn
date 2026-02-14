@@ -83,7 +83,7 @@ local function open_diagnostic_float()
     end
     
     local _, winid = vim.diagnostic.open_float(nil, {
-        focusable = false,
+        focusable = true,
         close_events = { "CursorMoved", "CursorMovedI", "InsertEnter", "FocusLost" },
         border = "rounded",
         source = "always",
