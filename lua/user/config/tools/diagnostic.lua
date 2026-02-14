@@ -1,35 +1,86 @@
 -- =====================================================
--- Refined Auto Diagnostic Float (Fixed)
+-- Minimal UI - No Sign Column, No Line Numbers
 -- =====================================================
 
--- 1. Modern Sign Definitions
+vim.o.signcolumn = "no"
+vim.o.number = false
+vim.o.relativenumber = false
+
+-- Diagnostic signs (not visible, but needed for the system to work)
 local signs = {
-    Error = " ", 
-    Warn  = " ", 
+    Error = " ", 
+    Warn  = " ", 
     Hint  = "󰌵 ", 
-    Info  = " ",
+    Info  = " ",
 }
 
 for type, icon in pairs(signs) do
     local hl = "DiagnosticSign" .. type
     vim.fn.sign_define(hl, {
-        text = icon,
-        texthl = hl,
-        numhl = hl,
+        text = "",
+        texthl = "",
+        numhl = "",
     })
 end
 
+-- Helper function to get severity summary for a line
+local function get_line_severity_summary(line_diagnostics)
+    local has_error = false
+    local has_warn = false
+    local has_hint = false
+    local has_info = false
+    
+    for _, diag in ipairs(line_diagnostics) do
+        if diag.severity == vim.diagnostic.severity.ERROR then
+            has_error = true
+        elseif diag.severity == vim.diagnostic.severity.WARN then
+            has_warn = true
+        elseif diag.severity == vim.diagnostic.severity.HINT then
+            has_hint = true
+        elseif diag.severity == vim.diagnostic.severity.INFO then
+            has_info = true
+        end
+    end
+    
+    local parts = {}
+    if has_error then table.insert(parts, "Error") end
+    if has_warn then table.insert(parts, "Warning") end
+    if has_hint then table.insert(parts, "Hint") end
+    if has_info then table.insert(parts, "Info") end
+    
+    return "<-- " .. table.concat(parts, " + ")
+end
+
 vim.diagnostic.config({
-    signs = true,
+    signs = false,
     underline = true,
-    virtual_text = false,
+    virtual_text = {
+        spacing = 4,
+        prefix = function(diagnostic, i, total)
+            -- Get all diagnostics for this line
+            local bufnr = vim.api.nvim_get_current_buf()
+            local line = diagnostic.lnum
+            local line_diagnostics = vim.diagnostic.get(bufnr, { lnum = line })
+            
+            -- Only show summary on first diagnostic of the line
+            if i == 1 then
+                return get_line_severity_summary(line_diagnostics) .. " "
+            else
+                return ""
+            end
+        end,
+        format = function(diagnostic)
+            -- Don't show individual diagnostic text in virtual text
+            return ""
+        end,
+    },
     severity_sort = true,
     float = {
         border = "rounded",
         source = "always",
         header = "",
-        prefix = function(diagnostic, _, _)
-            -- Map severity to icon with appropriate highlighting
+        wrap = true,
+        prefix = function(diagnostic, i, total)
             local severity = diagnostic.severity
             local icon = ""
             local hl = ""
@@ -48,7 +99,10 @@ vim.diagnostic.config({
                 hl = "DiagnosticInfo"
             end
             
-            return icon .. " ", hl
+            -- Add numbering with line info
+            local line = diagnostic.lnum + 1
+            local col = diagnostic.col + 1
+            return string.format("[%d]. %s [%d:%d] ", i, icon, line, col), hl
         end,
     },
 })
@@ -57,7 +111,6 @@ vim.o.updatetime = 100
 local diag_auto_enabled = true
 local diag_float_winid = nil
 
--- 2. Helper: Check if any hover/documentation float exists
 local function hover_float_exists()
     for _, win in ipairs(vim.api.nvim_list_wins()) do
         local config = vim.api.nvim_win_get_config(win)
@@ -72,7 +125,6 @@ local function hover_float_exists()
     return false
 end
 
--- 3. Optimized Float Logic
 local function open_diagnostic_float()
     if hover_float_exists() then
         return
@@ -88,7 +140,8 @@ local function open_diagnostic_float()
         border = "rounded",
         source = "always",
         scope = "line",
-        prefix = function(diagnostic, _, _)
+        wrap = true,
+        prefix = function(diagnostic, i, total)
             local severity = diagnostic.severity
             local icon = ""
             local hl = ""
@@ -107,7 +160,10 @@ local function open_diagnostic_float()
                 hl = "DiagnosticInfo"
             end
             
-            return icon .. " ", hl
+            -- Add numbering with line info
+            local line = diagnostic.lnum + 1
+            local col = diagnostic.col + 1
+            return string.format("[%d]. %s [%d:%d] ", i, icon, line, col), hl
         end,
     })
     
@@ -115,7 +171,6 @@ local function open_diagnostic_float()
     return winid
 end
 
--- 4. Autocommands
 local diag_group = vim.api.nvim_create_augroup("DiagnosticFloat", { clear = true })
 
 vim.api.nvim_create_autocmd("CursorHold", {
@@ -136,18 +191,14 @@ vim.api.nvim_create_autocmd("WinClosed", {
     end,
 })
 
--- Add this autocmd to your diagnostic group
 vim.api.nvim_create_autocmd("VimResized", {
     group = diag_group,
     callback = function()
-        -- Close the existing float if it exists
         if diag_float_winid and vim.api.nvim_win_is_valid(diag_float_winid) then
             vim.api.nvim_win_close(diag_float_winid, true)
             diag_float_winid = nil
             
-            -- Reopen if auto-float is enabled and there are diagnostics
             if diag_auto_enabled and not vim.api.nvim_get_mode().mode:find("i") then
-                -- Small delay to let the UI settle after resize
                 vim.defer_fn(function()
                     open_diagnostic_float()
                 end, 50)
@@ -170,7 +221,8 @@ vim.keymap.set("n", "gl", function()
     vim.diagnostic.open_float({ 
         border = "rounded", 
         focusable = true,
-        prefix = function(diagnostic, _, _)
+        wrap = true,
+        prefix = function(diagnostic, i, total)
             local severity = diagnostic.severity
             local icon = ""
             local hl = ""
@@ -189,7 +241,10 @@ vim.keymap.set("n", "gl", function()
                 hl = "DiagnosticInfo"
             end
             
-            return icon .. " ", hl
+            -- Add numbering with line info
+            local line = diagnostic.lnum + 1
+            local col = diagnostic.col + 1
+            return string.format("[%d]. %s [%d:%d] ", i, icon, line, col), hl
         end,
     })
 end, { desc = "Open diagnostic float (focusable)" })
@@ -203,3 +258,7 @@ vim.keymap.set("n", "<M-k>", function()
 end, { desc = "Prev diagnostic" })
 
 vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "LSP Hover" })
+
+vim.keymap.set("n", "<leader>tn", function()
+    vim.o.number = not vim.o.number
+end, { desc = "Toggle line numbers" })

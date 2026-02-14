@@ -1,56 +1,38 @@
-local o = vim.o
-vim.o.number = true
+-- UI & Display
+vim.o.number = false
 vim.o.relativenumber = false
-o.cursorline = true
-o.termguicolors = true
-o.signcolumn = "yes"
-o.expandtab = true
-o.shiftwidth = 4
-o.tabstop = 4
-o.smartindent = true
-o.textwidth=0
-vim.opt.softtabstop = 4
-vim.opt.clipboard = "" 
-vim.cmd("syntax on")             -- Tells Neovim to use Regex highlighting
-vim.cmd("filetype plugin on")    -- Tells Neovim to load language-specific settings
-
-vim.cmd("filetype plugin indent on")
--- Minimal custom tabline: show current file + indicator for more tabs
+vim.o.cursorline = true
+vim.o.termguicolors = true
+vim.o.signcolumn = "no"
 vim.o.showtabline = 2
+vim.o.scrolloff = 8
+vim.o.sidescrolloff = 8
 
-vim.opt.timeout = true
-vim.opt.timeoutlen = 0
-vim.opt.updatetime = 100
-vim.opt.ttimeoutlen = 0
-vim.opt.lazyredraw = false -- keep off
-vim.opt.ttyfast = true
+-- Indentation & Formatting
+vim.o.expandtab = true
+vim.o.shiftwidth = 4
+vim.o.tabstop = 4
+vim.o.softtabstop = 4
+vim.o.smartindent = true
+vim.o.textwidth = 0
+vim.o.backspace = "indent,eol,start"
 
-vim.opt.incsearch = true
-vim.opt.hlsearch = true
+-- Search
+vim.o.incsearch = true
+vim.o.hlsearch = true
 
-vim.opt.scrolloff = 8
-vim.opt.sidescrolloff = 8
+-- Folding (Treesitter-based)
+vim.o.foldmethod = "expr"
+vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.o.foldlevel = 99
+vim.o.foldlevelstart = 99
+vim.o.foldnestmax = 10
 
-vim.opt.smartindent = true
+-- Syntax & Filetype
+vim.cmd("syntax on")
+vim.cmd("filetype plugin indent on")
 
-vim.opt.backspace = { "indent", "eol", "start" }
-
-vim.g.mapleader = " "
-vim.g.maplocalleader = "'"
-
--- Folding
--- Use treesitter for folding
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-
--- Keep most folds open by default when opening a file
-vim.opt.foldlevel = 99
-vim.opt.foldlevelstart = 99
-vim.opt.foldnestmax = 10
-
-
-
--- Auto-fix with first suggestion
+-- Keymaps: Spelling
 vim.keymap.set('n', '<leader>fw', function()
     local word = vim.fn.expand('<cword>')
     local suggestions = vim.fn.spellsuggest(word, 1)
@@ -63,6 +45,4 @@ vim.keymap.set('n', '<leader>fw', function()
     end
 end, { desc = 'Fix spelling (first suggestion)' })
 
--- Quick spell check keybindings
 vim.keymap.set('n', '<C-x>s', 'z=', { desc = 'Spelling suggestions' })
-

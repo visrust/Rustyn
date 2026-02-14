@@ -1,6 +1,7 @@
 -- In user/stages/06_lspB.lua
 -- Move DAP to the end and defer it
 
+require('user.config.tools.diagnostic')
 vim.defer_fn(function ()
     require('user.config.tools.blink')
     require('user.config.tools.goto_preview')

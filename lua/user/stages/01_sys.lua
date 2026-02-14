@@ -1,4 +1,5 @@
 -- Core system
+require('user.sys.plugins')
 require('user.mini.mini_notify')
 require('user.sys.env')
 require('user.sys.options')

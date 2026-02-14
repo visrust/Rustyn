@@ -1,4 +1,5 @@
-require('user.sys.plugins')
+vim.g.mapleader = " "
+vim.g.maplocalleader = "'"
 -- require("user.profiler")
 vim.g.loaded_python_provider = 0
 vim.g.loaded_ruby_provider = 0
